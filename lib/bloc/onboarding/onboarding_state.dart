@@ -1,7 +1,7 @@
 part of 'onboarding_cubit.dart';
 
-class OnboardingPage{
-  OnboardingPage({ required this.title, required this.imagePath});
+class OnboardingPage {
+  OnboardingPage({required this.title, required this.imagePath});
 
   final String title;
   final String imagePath;
@@ -13,7 +13,7 @@ final class OnboardingState extends Equatable {
 
   final bool isStart;
   final int currentScreen;
-  
+
   factory OnboardingState.fromJson(Map<String, dynamic> json) =>
       _$OnboardingStateFromJson(json);
 
