@@ -51,12 +51,12 @@ class DefaultTextField extends StatelessWidget {
                 CustomTheme.of(context).typography.headline16Semibold.copyWith(
                       color: CustomTheme.of(context).colors.neutral2,
                     ),
-            suffixIcon: isTextInput
+            suffix: isTextInput
                 ? Bounce(
                     child: SvgPicture.asset(
                     AppIcons.closeSquare,
-                    width: 10,
-                    height: 10,
+                    width: 20,
+                    height: 20,
                   ))
                 : null,
           ),
