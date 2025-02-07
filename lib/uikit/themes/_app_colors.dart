@@ -14,31 +14,31 @@ class AppColors {
   Color get neutral4 => const Color(0xFFFFFFFF);
   Color get background1 => const Color(0xFF12151B);
 
-  LinearGradient get gradient1 => const LinearGradient(
+  static LinearGradient get gradient1 => const LinearGradient(
       colors: [Color(0xFF8E96FF), Color(0xFF6C5DD3)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient2 => const LinearGradient(
+  static LinearGradient get gradient2 => const LinearGradient(
       colors: [Color(0xFF9ADB7F), Color(0xFF6EA95C)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient3 => const LinearGradient(
+  static LinearGradient get gradient3 => const LinearGradient(
       colors: [Color(0xFFFFB28E), Color(0xFFFF7A55)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient4 => const LinearGradient(
+  static LinearGradient get gradient4 => const LinearGradient(
       colors: [Color(0xFFBBFFE7), Color(0xFF86FFCA)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient5 => const LinearGradient(
+  static LinearGradient get gradient5 => const LinearGradient(
       colors: [Color(0xFFCDE7FF), Color(0xFFCDE7FF)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient6 => const LinearGradient(
+  static LinearGradient get gradient6 => const LinearGradient(
       colors: [Color(0xFFE2BDFF), Color(0xFFDBB0FD)],
       begin: Alignment.bottomLeft,
       end: Alignment.topRight);
-  LinearGradient get gradient7 => const LinearGradient(colors: [
+  static LinearGradient get gradient7 => const LinearGradient(colors: [
         Color(0xFF4268DB),
         Color(0xFF558CE4),
         Color(0xFF69B1EE),

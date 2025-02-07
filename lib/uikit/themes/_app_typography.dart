@@ -49,7 +49,7 @@ class AppTypography {
       fontSize: 12.0,
       height: 1.333,
       fontFamily: fontFamily,
-      fontWeight: FontWeight.w500);
+      fontWeight: FontWeight.w700);
   TextStyle get caption12Medium => TextStyle(
       fontSize: 12,
       height: 1.333,
