@@ -5,9 +5,13 @@ class AppIcons {
   static const String closeSquare = 'assets/icons/close_square.svg';
   static const String arrowLeftSquare = 'assets/icons/arrow_left_square.svg';
   static const String arrowRightSquare = 'assets/icons/arrow_right_square.svg';
+  static const String hide = 'assets/icons/hide.svg';
+  static const String unHide = 'assets/icons/unhide.svg';
+  static const String success = 'assets/icons/success.svg';
+  static const String fail = 'assets/icons/fail.svg';
+  static const String darkWaveVector = 'assets/icons/dark_wave_vector.svg';
   static const String profile = 'assets/icons/profile.svg';
   static const String stats = 'assts/icons/stats.svg';
   static const String notifications = 'assets/icons/notification.svg';
   static const String settings = 'assets/icons/settings.svg';
-
 }

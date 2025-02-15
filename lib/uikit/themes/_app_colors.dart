@@ -48,6 +48,10 @@ class AppColors {
         Color(0xFF8AF0FE),
         Color(0xFF8CF4FF),
       ], begin: Alignment.bottomLeft, end: Alignment.topRight);
+  static LinearGradient get linear1 => LinearGradient(
+      colors: [const Color(0xFFFFFFFF).withOpacity(0), const Color(0xFFFFFFFF)],
+      begin: Alignment.bottomLeft,
+      end: Alignment.topRight);
 }
 
 class AppColorsLight extends AppColors {}

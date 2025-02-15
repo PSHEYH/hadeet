@@ -6,10 +6,16 @@ import 'package:hadeet/uikit/themes/_theme.dart';
 
 class DefaultTextField extends StatelessWidget {
   const DefaultTextField(
-      {super.key, required this.isTextInput, required this.onTap});
+      {super.key,
+      required this.isTextInput,
+      required this.onChangeText,
+      required this.onTap,
+      this.hintText = 'Enter email'});
 
   final bool isTextInput;
-  final Function(String) onTap;
+  final Function(String) onChangeText;
+  final Function() onTap;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +35,13 @@ class DefaultTextField extends StatelessWidget {
           autofocus: false,
           keyboardType: TextInputType.text,
           onChanged: (value) {
-            onTap(value);
+            onChangeText(value);
+          },
+          onTap: () {
+            onTap();
           },
           decoration: InputDecoration(
-            hintText: 'Enter email',
+            hintText: hintText,
             filled: true,
             fillColor: CustomTheme.of(context).colors.neutral1,
             contentPadding:
@@ -51,12 +60,13 @@ class DefaultTextField extends StatelessWidget {
                 CustomTheme.of(context).typography.headline16Semibold.copyWith(
                       color: CustomTheme.of(context).colors.neutral2,
                     ),
-            suffix: isTextInput
+            suffixIcon: isTextInput
                 ? Bounce(
+                    child: Padding(
+                    padding: const EdgeInsets.all(20.0),
                     child: SvgPicture.asset(
-                    AppIcons.closeSquare,
-                    width: 20,
-                    height: 20,
+                      AppIcons.closeSquare,
+                    ),
                   ))
                 : null,
           ),

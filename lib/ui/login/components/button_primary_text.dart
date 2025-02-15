@@ -11,20 +11,22 @@ class ButtonPrimaryText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Bounce(
+        onTap: onTap,
         child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: CustomTheme.of(context).colors.primary1,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-          child: Text(
-        text,
-        style: CustomTheme.of(context)
-            .typography
-            .headline16Bold
-            .copyWith(color: CustomTheme.of(context).colors.neutral4),
-      )),
-    ));
+          height: 50,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: CustomTheme.of(context).colors.primary1,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+              child: Text(
+            text,
+            style: CustomTheme.of(context)
+                .typography
+                .headline16Bold
+                .copyWith(color: CustomTheme.of(context).colors.neutral4),
+          )),
+        ));
   }
 }

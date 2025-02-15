@@ -3,13 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hadeet/bloc/login/login_cubit.dart';
-import 'package:hadeet/ui/login/components/button_primary_text.dart';
-import 'package:hadeet/ui/login/components/default_textfield.dart';
+import 'package:hadeet/models/login_view_type.dart';
+import 'package:hadeet/ui/login/components/login_view_email.dart';
+import 'package:hadeet/ui/login/components/login_view_password.dart';
+import 'package:hadeet/ui/login/components/login_view_signup_name.dart';
+import 'package:hadeet/ui/login/components/login_view_signup_repeat_password.dart';
 import 'package:hadeet/uikit/assets/icons.dart';
-import 'package:hadeet/uikit/themes/_theme.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
+
+  Widget getMainBody(LoginCubit controller) {
+    switch (controller.state.viewType) {
+      case LoginViewType.email:
+        return LoginViewEmail(
+            email: controller.state.email,
+            onChangeText: controller.onChangeText,
+            isTextFieldActive: controller.state.isTextFieldActive,
+            onTap: controller.onTextFieldTap,
+            onContinue: controller.onContinueTap);
+      case LoginViewType.password:
+        return LoginViewPassword(
+          isTextInput: controller.state.isTextFieldActive,
+          onChangeText: controller.onChangeText,
+          email: controller.state.email,
+          onTap: controller.onTextFieldTap,
+          onContinue: controller.onContinueTap,
+          onSignUp: controller.onContinueTap,
+          isObscured: controller.state.isFirstTextFieldObscured,
+        );
+      case LoginViewType.signUpName:
+        return LoginViewSignupName(
+          isTextInput: controller.state.isTextFieldActive,
+          onChangeText: controller.onChangeText,
+          email: controller.state.email,
+          onTap: controller.onTextFieldTap,
+          onContinue: controller.onContinueTap,
+        );
+      case LoginViewType.signUpRepeatPassword:
+        return LoginViewSignupRepeatPassword(
+          onChangeText: controller.onChangeText,
+          email: controller.state.email,
+          onTap: controller.onTextFieldTap,
+          onContinue: controller.onContinueTap,
+          isPasswordIdentical:
+              controller.state.password == controller.state.reEnterPassword &&
+                  controller.state.password.isNotEmpty,
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +78,7 @@ class LoginView extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              Text('What’s your email address?',
-                  style: CustomTheme.of(context)
-                      .typography
-                      .title30Bold
-                      .copyWith(
-                          color: CustomTheme.of(context).colors.neutral4)),
-              const SizedBox(
-                height: 24,
-              ),
-              Text('Your Email',
-                  style: CustomTheme.of(context)
-                      .typography
-                      .body14Semibold
-                      .copyWith(
-                          color: CustomTheme.of(context).colors.neutral3)),
-              const SizedBox(
-                height: 12,
-              ),
-              DefaultTextField(
-                  isTextInput: controller.state.email.isNotEmpty,
-                  onTap: (String value) {
-                    controller.onChangeText('email', value);
-                  }),
-              if (controller.state.email.isNotEmpty)
-                Padding(
-                    padding: const EdgeInsets.only(top: 24),
-                    child: ButtonPrimaryText(text: 'Continue', onTap: () {}))
+              getMainBody(controller),
             ],
           ),
         );

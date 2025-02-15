@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:hadeet/ui/login/components/button_primary_text.dart';
-import 'package:hadeet/ui/login/components/password_textfield.dart';
+import 'package:hadeet/ui/login/components/default_textfield.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 
-class LoginViewPassword extends StatelessWidget {
-  const LoginViewPassword(
+class LoginViewSignupName extends StatelessWidget {
+  const LoginViewSignupName(
       {super.key,
       required this.isTextInput,
       required this.onChangeText,
       required this.email,
       required this.onTap,
-      required this.onContinue,
-      required this.onSignUp,
-      required this.isObscured});
+      required this.onContinue});
 
   final bool isTextInput;
-  final bool isObscured;
   final Function(String, String) onChangeText;
   final String email;
   final Function() onTap;
   final Function(BuildContext) onContinue;
-  final Function(BuildContext) onSignUp;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Log In',
+        Text('Sign Up',
             style: CustomTheme.of(context)
                 .typography
                 .title30Bold
@@ -47,10 +43,10 @@ class LoginViewPassword extends StatelessWidget {
               text: email,
               style: CustomTheme.of(context).typography.body14Medium.copyWith(
                   color: CustomTheme.of(context).colors.semantic3,
-                  decorationColor: CustomTheme.of(context).colors.semantic3,
-                  decoration: TextDecoration.underline)),
+                  decoration: TextDecoration.underline,
+                  decorationColor: CustomTheme.of(context).colors.semantic3)),
           TextSpan(
-              text: ' to login',
+              text: ' sign up',
               style: CustomTheme.of(context)
                   .typography
                   .body14Medium
@@ -59,7 +55,7 @@ class LoginViewPassword extends StatelessWidget {
         const SizedBox(
           height: 36,
         ),
-        Text('Your password',
+        Text('Your Name',
             style: CustomTheme.of(context)
                 .typography
                 .body14Semibold
@@ -67,25 +63,16 @@ class LoginViewPassword extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-        PasswordTextField(
+        DefaultTextField(
             isTextInput: isTextInput,
             onTap: onTap,
             onChangeText: (String value) {
-              onChangeText('password', value);
-            },
-            isObscured: isObscured),
+              onChangeText('name', value);
+            }),
         Padding(
           padding: const EdgeInsets.only(top: 24),
           child: ButtonPrimaryText(
               text: 'Continue',
-              onTap: () {
-                onContinue(context);
-              }),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24),
-          child: ButtonPrimaryText(
-              text: 'Sign up',
               onTap: () {
                 onContinue(context);
               }),

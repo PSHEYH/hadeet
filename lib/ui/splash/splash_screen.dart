@@ -9,6 +9,15 @@ class SplashScreen extends StatelessWidget {
 
   Timer? _timer;
 
+  SplashScreen._();
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(
+      settings: const RouteSettings(name: '/splash'),
+      builder: (_) => SplashScreen._(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {

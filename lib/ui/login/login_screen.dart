@@ -11,6 +11,7 @@ class LoginScreen extends StatelessWidget {
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
+      settings: const RouteSettings(name: '/login'),
       builder: (_) => const LoginScreen._(),
     );
   }

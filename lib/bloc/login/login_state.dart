@@ -6,12 +6,20 @@ final class LoginState extends Equatable {
       {this.email = '',
       this.password = '',
       this.name = '',
-      this.reEnterPassword = ''});
+      this.reEnterPassword = '',
+      this.isTextFieldActive = false,
+      this.viewType = LoginViewType.email,
+      this.isFirstTextFieldObscured = true,
+      this.isSecondTextFieldObscured = true});
 
   final String email;
   final String password;
   final String name;
   final String reEnterPassword;
+  final bool isTextFieldActive;
+  final bool isFirstTextFieldObscured;
+  final bool isSecondTextFieldObscured;
+  final LoginViewType viewType;
 
   factory LoginState.fromJson(Map<String, dynamic> json) =>
       _$LoginStateFromJson(json);
@@ -19,17 +27,35 @@ final class LoginState extends Equatable {
   Map<String, dynamic> toJson() => _$LoginStateToJson(this);
 
   @override
-  List<Object?> get props => [email, password, name, reEnterPassword];
+  List<Object?> get props => [
+        email,
+        password,
+        name,
+        reEnterPassword,
+        isTextFieldActive,
+        viewType,
+        isFirstTextFieldObscured
+      ];
 
   LoginState copyWith(
       {String? email,
       String? name,
       String? password,
-      String? reEnterPassword}) {
+      String? reEnterPassword,
+      bool? isTextFieldActive,
+      LoginViewType? viewType,
+      bool? isFirstTextFieldObscured,
+      bool? isSecondTextFieldObscured}) {
     return LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
         name: name ?? this.name,
-        reEnterPassword: reEnterPassword ?? this.reEnterPassword);
+        reEnterPassword: reEnterPassword ?? this.reEnterPassword,
+        isTextFieldActive: isTextFieldActive ?? this.isTextFieldActive,
+        viewType: viewType ?? this.viewType,
+        isFirstTextFieldObscured:
+            isFirstTextFieldObscured ?? this.isFirstTextFieldObscured,
+        isSecondTextFieldObscured:
+            isSecondTextFieldObscured ?? this.isSecondTextFieldObscured);
   }
 }
