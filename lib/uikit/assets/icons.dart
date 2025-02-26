@@ -11,7 +11,8 @@ class AppIcons {
   static const String fail = 'assets/icons/fail.svg';
   static const String darkWaveVector = 'assets/icons/dark_wave_vector.svg';
   static const String profile = 'assets/icons/profile.svg';
-  static const String stats = 'assts/icons/stats.svg';
+  static const String stats = 'assets/icons/graph.svg';
   static const String notifications = 'assets/icons/notification.svg';
-  static const String settings = 'assets/icons/settings.svg';
+  static const String settings = 'assets/icons/setting.svg';
+  static const String calendar = 'assets/icons/calendar.svg';
 }

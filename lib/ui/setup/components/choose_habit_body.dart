@@ -5,24 +5,31 @@ import 'package:hadeet/uikit/assets/icons.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 
 class Habit {
-  const Habit({required this.title, required this.imagePath});
+  const Habit(
+      {required this.title, required this.imagePath, required this.goalName});
   final String title;
   final String imagePath;
+  final String goalName;
 }
 
 class ChooseHabitBody extends StatelessWidget {
-  ChooseHabitBody({super.key, required this.onContinue});
+  const ChooseHabitBody(
+      {super.key, required this.onContinue, required this.onChooseHabit});
 
-  List<Habit> habits = const [
-    Habit(title: 'Bicycle', imagePath: 'bicycle.png'),
-    Habit(title: 'Reading book', imagePath: 'reading.png'),
-    Habit(title: 'Social activity', imagePath: 'greetings_image_5.png'),
-    Habit(title: 'Other', imagePath: 'rocket.png'),
-    Habit(title: 'Walking', imagePath: 'walking.png'),
-    Habit(title: 'Write diary', imagePath: 'bicycle.png'),
+  final List<Habit> habits = const [
+    Habit(title: 'Bicycle', imagePath: 'bicycle.png', goalName: 'minutes'),
+    Habit(title: 'Reading book', imagePath: 'reading.png', goalName: 'pages'),
+    Habit(
+        title: 'Social activity',
+        imagePath: 'greetings_image_5.png',
+        goalName: 'minutes'),
+    Habit(title: 'Other', imagePath: 'rocket.png', goalName: 'minutes'),
+    Habit(title: 'Walking', imagePath: 'walking.png', goalName: 'miles'),
+    Habit(title: 'Write diary', imagePath: 'writing.png', goalName: 'pages'),
   ];
 
   final Function() onContinue;
+  final Function(Habit habit) onChooseHabit;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +65,10 @@ class ChooseHabitBody extends StatelessWidget {
                 spacing: 20,
                 children: [
                   ...habits.map((e) => Bounce(
-                      onTap: onContinue,
+                      onTap: () {
+                        onContinue();
+                        onChooseHabit(e);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                             color: CustomTheme.of(context).colors.neutral1,

@@ -26,6 +26,11 @@ class AppTypography {
       height: 1.5,
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700);
+  TextStyle get headline16Medium => TextStyle(
+      fontSize: 16.0,
+      height: 1.5,
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w500);
 
   TextStyle get headline16Semibold => TextStyle(
       fontSize: 16.0,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hadeet/bloc/setup/setup_cubit.dart';
+import 'package:hadeet/ui/setup/components/building_plan_body.dart';
 import 'package:hadeet/ui/setup/components/choose_habit_body.dart';
 import 'package:hadeet/ui/setup/components/do_you_procrastinate_body.dart';
+import 'package:hadeet/ui/setup/components/habit_body.dart';
 import 'package:hadeet/ui/setup/components/what_time_sleep_body.dart';
 import 'package:hadeet/ui/setup/components/what_time_wakeup_body.dart';
 
@@ -11,8 +13,9 @@ class SetupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupCubit, SetupState>(builder: (context, state) {
-      final SetupCubit controller = context.read<SetupCubit>();
+    return BlocBuilder<SetupCubit, SetupState>(builder: (buildContext, state) {
+      final SetupCubit controller = buildContext.read<SetupCubit>();
+      controller.addFocusNodeListener();
       List<Widget> pages = [
         WhatTimeWakeupBody(
           onChangeTime: controller.onChangeTime,
@@ -42,7 +45,24 @@ class SetupView extends StatelessWidget {
             secondChoice: 'I want to be\n organized',
             thirdChoice: 'Not ready\nto answer',
             onContinue: controller.onContinue),
-        ChooseHabitBody(onContinue: controller.onContinue),
+        ChooseHabitBody(
+          onContinue: controller.onContinue,
+          onChooseHabit: controller.onChooseHabit,
+        ),
+        HabitBody(
+          imagePath: controller.state.chosenHabitImage,
+          title: controller.state.chosenHabitTitle,
+          goalName: controller.state.chosenHabitGoal,
+          node: controller.focusNode,
+          onTextFieldTap: controller.onTextFieldTap,
+          isTextFieldActive: controller.state.isTextFieldActive,
+          onContinue: controller.onContinue,
+        ),
+        BuildingPlanBody(
+          padding: controller.state.loadingProgress,
+          goToday: controller.goToToday,
+          hasBuilt: controller.hasBuilt,
+        ),
       ];
 
       return PageView.builder(
@@ -50,7 +70,7 @@ class SetupView extends StatelessWidget {
           clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
           controller: controller.pageController,
-          itemBuilder: (context, index) {
+          itemBuilder: (cnt, index) {
             return pages[index];
           });
     });

@@ -12,4 +12,5 @@ class AppImages {
   static const String writing = 'assets/images/writing.png';
   static const String flagBoy = 'assets/images/flag_boy.png';
   static const String secondPurpleWave = 'assets/images/second_purple_wave.png';
+  static const String habit = 'assets/images/habit.png';
 }

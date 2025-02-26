@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'onboarding_cubit.g.dart';
 part 'onboarding_state.dart';
 
-class OnboardingCubit extends HydratedCubit<OnboardingState> {
+class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit() : super(OnboardingState());
 
   PageController pageController = PageController();
@@ -58,13 +58,4 @@ class OnboardingCubit extends HydratedCubit<OnboardingState> {
   }
 
   void loginWithGoogle() {}
-
-  @override
-  OnboardingState fromJson(Map<String, dynamic> json) =>
-      OnboardingState.fromJson(json);
-
-  @override
-  Map<String, dynamic>? toJson(OnboardingState state) {
-    return state.toJson();
-  }
 }

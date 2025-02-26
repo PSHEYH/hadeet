@@ -7,17 +7,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'today_cubit.g.dart';
 part 'today_state.dart';
 
-class TodayCubit extends HydratedCubit<TodayState> {
+class TodayCubit extends Cubit<TodayState> {
   TodayCubit() : super(TodayState());
 
   TextEditingController textEditingController = TextEditingController();
-
-
-  @override
-  TodayState fromJson(Map<String, dynamic> json) => TodayState.fromJson(json);
-
-  @override
-  Map<String, dynamic>? toJson(TodayState state) {
-    return state.toJson();
-  }
 }

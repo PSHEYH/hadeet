@@ -67,7 +67,10 @@ class DoYouProcrastinateBody extends StatelessWidget {
                     height: 16,
                   ),
                   AnimatedChoiceButton(
-                      text: thirdChoice, onContinue: onContinue),
+                      text: thirdChoice,
+                      onContinue: () {
+                        onContinue();
+                      }),
                 ],
               ),
             ),

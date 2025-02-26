@@ -1,19 +1,34 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hadeet/ui/setup/components/choose_habit_body.dart';
+import 'package:hadeet/ui/today/today_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'setup_cubit.g.dart';
 part 'setup_state.dart';
 
-class SetupCubit extends HydratedCubit<SetupState> {
+class SetupCubit extends Cubit<SetupState> {
   SetupCubit()
       : super(SetupState(
             wakeUpDateTime: DateTime.now().copyWith(hour: 7, minute: 30),
-            sleepDateTime: DateTime.now().copyWith(hour: 22, minute: 30)));
+            sleepDateTime: DateTime.now().copyWith(hour: 22, minute: 30),
+            loadingProgress: 166));
 
+  FocusNode focusNode = FocusNode();
   PageController pageController = PageController();
   int countScreen = 0;
+  bool hasBuilt = false;
+
+  addFocusNodeListener() {
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 400), () {
+          emit(state.copyWith(isTextFieldActive: false));
+        });
+      }
+    });
+  }
 
   onChangeTime(bool isHour, int count, [String type = 'wakeup']) {
     if (type == 'wakeup') {
@@ -34,24 +49,40 @@ class SetupCubit extends HydratedCubit<SetupState> {
     }
   }
 
-  onContinue() {
+  Future onContinue() async {
     countScreen = countScreen + 1;
-    pageController.animateToPage(countScreen,
-        duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
+    await pageController.animateToPage(countScreen,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
-  @override
-  Future<void> close() {
+  goToToday(BuildContext buildContext) async {
+    if (countScreen == 7) {
+      hasBuilt = true;
+      emit(state.copyWith(loadingProgress: state.loadingProgress - 36));
+      await Future.delayed(const Duration(milliseconds: 900));
+      emit(state.copyWith(loadingProgress: state.loadingProgress - 50));
+      await Future.delayed(const Duration(milliseconds: 700));
+      emit(state.copyWith(loadingProgress: state.loadingProgress - 40));
+      await Future.delayed(const Duration(milliseconds: 500));
+      emit(state.copyWith(loadingProgress: state.loadingProgress - 40));
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
+    // if (buildContext.mounted) {
+    //   Navigator.of(buildContext).pop();
+    // }
+    if (buildContext.mounted) {
+      await Navigator.push(buildContext, TodayScreen.route());
+    }
+  }
+
+  onChooseHabit(Habit habit) {
     emit(state.copyWith(
-        wakeUpDateTime: DateTime.now().copyWith(hour: 7, minute: 30)));
-    return super.close();
+        chosenHabitTitle: habit.title,
+        chosenHabitImage: habit.imagePath,
+        chosenHabitGoal: habit.goalName));
   }
 
-  @override
-  SetupState fromJson(Map<String, dynamic> json) => SetupState.fromJson(json);
-
-  @override
-  Map<String, dynamic>? toJson(SetupState state) {
-    return state.toJson();
+  onTextFieldTap() {
+    emit(state.copyWith(isTextFieldActive: true));
   }
 }

@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'login_cubit.g.dart';
 part 'login_state.dart';
 
-class LoginCubit extends HydratedCubit<LoginState> {
+class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(const LoginState());
 
   TextEditingController textEditingController = TextEditingController();
@@ -52,13 +52,5 @@ class LoginCubit extends HydratedCubit<LoginState> {
 
   void onTextFieldTap() {
     emit(state.copyWith(isTextFieldActive: true));
-  }
-
-  @override
-  LoginState fromJson(Map<String, dynamic> json) => LoginState.fromJson(json);
-
-  @override
-  Map<String, dynamic>? toJson(LoginState state) {
-    return state.toJson();
   }
 }
