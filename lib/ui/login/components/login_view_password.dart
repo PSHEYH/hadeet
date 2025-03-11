@@ -11,7 +11,7 @@ class LoginViewPassword extends StatelessWidget {
       required this.email,
       required this.onTap,
       required this.onContinue,
-      required this.onSignUp,
+      required this.onLogin,
       required this.isObscured});
 
   final bool isTextInput;
@@ -20,7 +20,7 @@ class LoginViewPassword extends StatelessWidget {
   final String email;
   final Function() onTap;
   final Function(BuildContext) onContinue;
-  final Function(BuildContext) onSignUp;
+  final Function(BuildContext) onLogin;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class LoginViewPassword extends StatelessWidget {
           child: ButtonPrimaryText(
               text: 'Continue',
               onTap: () {
-                onContinue(context);
+                onLogin(context);
               }),
         ),
         Padding(

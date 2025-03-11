@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hadeet/api/api_service.dart';
 import 'package:hadeet/models/login_view_type.dart';
+import 'package:hadeet/models/user/user.dart';
+import 'package:hadeet/repositories/user_repository.dart';
 import 'package:hadeet/ui/setup/setup_screen.dart';
+import 'package:hadeet/ui/today/today_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,6 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(const LoginState());
 
   TextEditingController textEditingController = TextEditingController();
+  final UserRepository _userRepository = UserRepository.instance;
   FocusNode focusNode = FocusNode();
   int countOfScreens = 0;
 
@@ -27,17 +32,35 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void onContinueTap(BuildContext context) {
-    print('on continue');
+  void onContinueTap(BuildContext context) async {
+    if (textEditingController.text.isEmpty) {
+      return;
+    }
     if (countOfScreens < LoginViewType.values.length - 1) {
       countOfScreens++;
       emit(state.copyWith(
           viewType: LoginViewType.values[countOfScreens],
           isTextFieldActive: false));
     } else {
-      countOfScreens = 0;
-      emit(state.copyWith(email: ''));
-      Navigator.of(context).push(SetupScreen.route());
+      User? user = await ApiService.signUp(
+          email: state.email, password: state.password, name: state.name);
+      if (user != null) {
+        _userRepository.saveUser(user);
+        Navigator.of(context).push(SetupScreen.route());
+      } else {
+        print('Request error');
+      }
+    }
+  }
+
+  void login(BuildContext context) async {
+    User? user =
+        await ApiService.login(email: state.email, password: state.password);
+    if (user != null) {
+      _userRepository.saveUser(user);
+      Navigator.of(context).push(TodayScreen.route());
+    } else {
+      print('Request error');
     }
   }
 

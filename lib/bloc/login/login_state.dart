@@ -10,7 +10,8 @@ final class LoginState extends Equatable {
       this.isTextFieldActive = false,
       this.viewType = LoginViewType.email,
       this.isFirstTextFieldObscured = true,
-      this.isSecondTextFieldObscured = true});
+      this.isSecondTextFieldObscured = true,
+      this.isError = false});
 
   final String email;
   final String password;
@@ -20,6 +21,7 @@ final class LoginState extends Equatable {
   final bool isFirstTextFieldObscured;
   final bool isSecondTextFieldObscured;
   final LoginViewType viewType;
+  final bool isError;
 
   factory LoginState.fromJson(Map<String, dynamic> json) =>
       _$LoginStateFromJson(json);
@@ -34,7 +36,8 @@ final class LoginState extends Equatable {
         reEnterPassword,
         isTextFieldActive,
         viewType,
-        isFirstTextFieldObscured
+        isFirstTextFieldObscured,
+        isError
       ];
 
   LoginState copyWith(
@@ -45,7 +48,8 @@ final class LoginState extends Equatable {
       bool? isTextFieldActive,
       LoginViewType? viewType,
       bool? isFirstTextFieldObscured,
-      bool? isSecondTextFieldObscured}) {
+      bool? isSecondTextFieldObscured,
+      bool? isError}) {
     return LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
@@ -56,6 +60,7 @@ final class LoginState extends Equatable {
         isFirstTextFieldObscured:
             isFirstTextFieldObscured ?? this.isFirstTextFieldObscured,
         isSecondTextFieldObscured:
-            isSecondTextFieldObscured ?? this.isSecondTextFieldObscured);
+            isSecondTextFieldObscured ?? this.isSecondTextFieldObscured,
+        isError: isError ?? this.isError);
   }
 }

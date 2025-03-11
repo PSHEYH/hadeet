@@ -29,7 +29,7 @@ class LoginView extends StatelessWidget {
           email: controller.state.email,
           onTap: controller.onTextFieldTap,
           onContinue: controller.onContinueTap,
-          onSignUp: controller.onContinueTap,
+          onLogin: controller.login,
           isObscured: controller.state.isFirstTextFieldObscured,
         );
       case LoginViewType.signUpName:
