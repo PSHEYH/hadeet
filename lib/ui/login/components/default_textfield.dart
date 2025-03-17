@@ -10,12 +10,16 @@ class DefaultTextField extends StatelessWidget {
       required this.isTextInput,
       required this.onChangeText,
       required this.onTap,
+      this.onClose,
+      this.textEditingController,
       this.hintText = 'Enter email'});
 
   final bool isTextInput;
   final Function(String) onChangeText;
   final Function() onTap;
+  final Function()? onClose;
   final String hintText;
+  final TextEditingController? textEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,7 @@ class DefaultTextField extends StatelessWidget {
           ),
         TextField(
           maxLines: 1,
+          controller: textEditingController,
           style: CustomTheme.of(context).typography.headline16Bold.copyWith(
                 color: CustomTheme.of(context).colors.neutral4,
               ),
@@ -62,12 +67,13 @@ class DefaultTextField extends StatelessWidget {
                     ),
             suffixIcon: isTextInput
                 ? Bounce(
+                    onTap: onClose,
                     child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: SvgPicture.asset(
-                      AppIcons.closeSquare,
-                    ),
-                  ))
+                      padding: const EdgeInsets.all(20.0),
+                      child: SvgPicture.asset(
+                        AppIcons.closeSquare,
+                      ),
+                    ))
                 : null,
           ),
         ),

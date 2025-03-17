@@ -46,7 +46,7 @@ class SettingsView extends StatelessWidget {
                           isActive: controller.state.currentIndex == e.key,
                           title: e.value.title,
                           onTap: () {
-                            controller.onButtonTap(e.key);
+                            controller.onButtonTap(e.key, context);
                           })))
                 ],
               ),

@@ -2,11 +2,14 @@ part of 'today_cubit.dart';
 
 @JsonSerializable()
 final class TodayState extends Equatable {
-  const TodayState({
-      this.statusView = TasksStatusView.completed
-  });
+  const TodayState(
+      {required this.currentDate,
+      this.type = TaskScreenType.main,
+      this.statusView = TasksStatusView.completed});
 
   final TasksStatusView statusView;
+  final DateTime currentDate;
+  final TaskScreenType type;
 
   factory TodayState.fromJson(Map<String, dynamic> json) =>
       _$TodayStateFromJson(json);
@@ -14,13 +17,15 @@ final class TodayState extends Equatable {
   Map<String, dynamic> toJson() => _$TodayStateToJson(this);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [currentDate, statusView, type];
 
-  TodayState copyWith({
-    TasksStatusView? taskStatus
-}) {
+  TodayState copyWith(
+      {TasksStatusView? taskStatus,
+      DateTime? currentDate,
+      TaskScreenType? type}) {
     return TodayState(
-      statusView: taskStatus ?? this.statusView
-    );
+        statusView: taskStatus ?? statusView,
+        currentDate: currentDate ?? this.currentDate,
+        type: type ?? this.type);
   }
 }

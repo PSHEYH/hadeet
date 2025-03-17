@@ -18,6 +18,7 @@ LoginState _$LoginStateFromJson(Map<String, dynamic> json) => LoginState(
           json['isFirstTextFieldObscured'] as bool? ?? true,
       isSecondTextFieldObscured:
           json['isSecondTextFieldObscured'] as bool? ?? true,
+      isError: json['isError'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$LoginStateToJson(LoginState instance) =>
@@ -30,6 +31,7 @@ Map<String, dynamic> _$LoginStateToJson(LoginState instance) =>
       'isFirstTextFieldObscured': instance.isFirstTextFieldObscured,
       'isSecondTextFieldObscured': instance.isSecondTextFieldObscured,
       'viewType': _$LoginViewTypeEnumMap[instance.viewType]!,
+      'isError': instance.isError,
     };
 
 const _$LoginViewTypeEnumMap = {

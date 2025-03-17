@@ -13,42 +13,45 @@ import 'package:hadeet/uikit/assets/icons.dart';
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
-  Widget getMainBody(LoginCubit controller) {
-    switch (controller.state.viewType) {
+  Widget getMainBody(LoginCubit cubit) {
+    switch (cubit.state.viewType) {
       case LoginViewType.email:
         return LoginViewEmail(
-            email: controller.state.email,
-            onChangeText: controller.onChangeText,
-            isTextFieldActive: controller.state.isTextFieldActive,
-            onTap: controller.onTextFieldTap,
-            onContinue: controller.onContinueTap);
+          onChangeText: cubit.onChangeText,
+          isTextFieldActive: cubit.state.isTextFieldActive,
+          onTap: cubit.onTextFieldTap,
+          onContinue: cubit.onContinueTap,
+          onCloseTextField: cubit.onClearTextField,
+          textEditingController: cubit.textEditingController,
+        );
       case LoginViewType.password:
         return LoginViewPassword(
-          isTextInput: controller.state.isTextFieldActive,
-          onChangeText: controller.onChangeText,
-          email: controller.state.email,
-          onTap: controller.onTextFieldTap,
-          onContinue: controller.onContinueTap,
-          onLogin: controller.login,
-          isObscured: controller.state.isFirstTextFieldObscured,
+          isTextInput: cubit.state.isTextFieldActive,
+          onChangeText: cubit.onChangeText,
+          email: cubit.state.email,
+          onTap: cubit.onTextFieldTap,
+          onContinue: cubit.onContinueTap,
+          onLogin: cubit.login,
+          isObscured: cubit.state.isFirstTextFieldObscured,
+          onObscureTap: cubit.onObscureTap,
         );
       case LoginViewType.signUpName:
         return LoginViewSignupName(
-          isTextInput: controller.state.isTextFieldActive,
-          onChangeText: controller.onChangeText,
-          email: controller.state.email,
-          onTap: controller.onTextFieldTap,
-          onContinue: controller.onContinueTap,
+          isTextInput: cubit.state.isTextFieldActive,
+          onChangeText: cubit.onChangeText,
+          email: cubit.state.email,
+          onTap: cubit.onTextFieldTap,
+          onContinue: cubit.onContinueTap,
         );
       case LoginViewType.signUpRepeatPassword:
         return LoginViewSignupRepeatPassword(
-          onChangeText: controller.onChangeText,
-          email: controller.state.email,
-          onTap: controller.onTextFieldTap,
-          onContinue: controller.onContinueTap,
+          onChangeText: cubit.onChangeText,
+          email: cubit.state.email,
+          onTap: cubit.onTextFieldTap,
+          onContinue: cubit.onContinueTap,
           isPasswordIdentical:
-              controller.state.password == controller.state.reEnterPassword &&
-                  controller.state.password.isNotEmpty,
+              cubit.state.password == cubit.state.reEnterPassword &&
+                  cubit.state.password.isNotEmpty,
         );
     }
   }
@@ -57,7 +60,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(child: BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        final controller = context.read<LoginCubit>();
+        final cubit = context.read<LoginCubit>();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
@@ -78,7 +81,7 @@ class LoginView extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              getMainBody(controller),
+              getMainBody(cubit),
             ],
           ),
         );

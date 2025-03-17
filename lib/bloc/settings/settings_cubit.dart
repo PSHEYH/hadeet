@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hadeet/repositories/user_repository.dart';
 import 'package:hadeet/uikit/assets/icons.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,7 +16,11 @@ class MenuButtonSignature {
 }
 
 class SettingsCubit extends Cubit<SettingsState> {
-  SettingsCubit() : super(SettingsState());
+  SettingsCubit() : super(const SettingsState()) {
+    name = _userRepository.getUserData().name;
+  }
+  final UserRepository _userRepository = UserRepository.instance;
+  late final String name;
 
   List<MenuButtonSignature> buttons = const [
     MenuButtonSignature(title: 'Today', icon: AppIcons.calendar),
@@ -23,7 +29,10 @@ class SettingsCubit extends Cubit<SettingsState> {
     MenuButtonSignature(title: 'Settings', icon: AppIcons.settings),
   ];
 
-  onButtonTap(int index) {
+  onButtonTap(int index, BuildContext context) {
     emit(state.copyWith(currentIndex: index));
+    if (index == 0) {
+      Navigator.of(context).pop();
+    }
   }
 }

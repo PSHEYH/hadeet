@@ -15,4 +15,6 @@ class AppIcons {
   static const String notifications = 'assets/icons/notification.svg';
   static const String settings = 'assets/icons/setting.svg';
   static const String calendar = 'assets/icons/calendar.svg';
+  static const String squareView = 'assets/icons/square_view.svg';
+  static const String listView = 'assets/icons/list_view.svg';
 }

@@ -11,9 +11,11 @@ class PasswordTextField extends DefaultTextField {
       required super.isTextInput,
       required super.onChangeText,
       required super.onTap,
-      required this.isObscured});
+      required this.isObscured,
+      required this.onObscureTap});
 
   final bool isObscured;
+  final Function() onObscureTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,11 @@ class PasswordTextField extends DefaultTextField {
       onTap: () {
         onTap();
       },
-      obscureText: true,
+      obscureText: isObscured,
       obscuringCharacter: '*',
       decoration: InputDecoration(
         hintText: 'Enter password',
-        filled: isObscured,
+        filled: true,
         fillColor: CustomTheme.of(context).colors.neutral1,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -54,12 +56,13 @@ class PasswordTextField extends DefaultTextField {
                   color: CustomTheme.of(context).colors.neutral2,
                 ),
         suffixIcon: Bounce(
+            onTap: onObscureTap,
             child: Padding(
-          padding: const EdgeInsets.all(17.0),
-          child: SvgPicture.asset(
-            isObscured ? AppIcons.unHide : AppIcons.hide,
-          ),
-        )),
+              padding: const EdgeInsets.all(17.0),
+              child: SvgPicture.asset(
+                isObscured ? AppIcons.unHide : AppIcons.hide,
+              ),
+            )),
       ),
     );
   }

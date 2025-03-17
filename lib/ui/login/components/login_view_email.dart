@@ -4,19 +4,22 @@ import 'package:hadeet/ui/login/components/default_textfield.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 
 class LoginViewEmail extends StatelessWidget {
-  const LoginViewEmail(
-      {super.key,
-      required this.email,
-      required this.onChangeText,
-      required this.isTextFieldActive,
-      required this.onTap,
-      required this.onContinue});
+  const LoginViewEmail({
+    super.key,
+    required this.onChangeText,
+    required this.isTextFieldActive,
+    required this.onTap,
+    required this.onContinue,
+    required this.onCloseTextField,
+    required this.textEditingController,
+  });
 
   final bool isTextFieldActive;
-  final String email;
   final Function() onTap;
+  final Function() onCloseTextField;
   final Function(String, String) onChangeText;
   final Function(BuildContext) onContinue;
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,9 @@ class LoginViewEmail extends StatelessWidget {
         ),
         DefaultTextField(
           isTextInput: isTextFieldActive,
+          textEditingController: textEditingController,
           onTap: onTap,
+          onClose: onCloseTextField,
           onChangeText: (String value) {
             onChangeText('email', value);
           },

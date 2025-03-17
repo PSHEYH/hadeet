@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hadeet/routes.dart';
 import 'package:hadeet/ui/splash/splash_screen.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
@@ -12,6 +13,7 @@ void main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 

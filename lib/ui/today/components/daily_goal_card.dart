@@ -25,56 +25,57 @@ class DailyGoalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Bounce(
+        onTap: onTap,
         child: Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: CustomTheme.of(context).colors.neutral1,
-          borderRadius: BorderRadius.circular(16)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-                gradient: gradient,
-                borderRadius: BorderRadius.circular(12),
-                image: const DecorationImage(
-                    image: AssetImage(
-                  AppImages.pencils,
-                ))),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: CustomTheme.of(context).colors.neutral1,
+              borderRadius: BorderRadius.circular(16)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                    gradient: gradient,
+                    borderRadius: BorderRadius.circular(12),
+                    image: const DecorationImage(
+                        image: AssetImage(
+                      AppImages.pencils,
+                    ))),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                text,
+                style: CustomTheme.of(context)
+                    .typography
+                    .headline16Bold
+                    .copyWith(color: CustomTheme.of(context).colors.neutral4),
+              ),
+              const Spacer(),
+              Text(
+                count.toString(),
+                style: CustomTheme.of(context)
+                    .typography
+                    .headline16Bold
+                    .copyWith(color: digitColor),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              SvgPicture.asset(
+                AppIcons.arrowRightSquare,
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+            ],
           ),
-          const SizedBox(
-            width: 16,
-          ),
-          Text(
-            'Completed',
-            style: CustomTheme.of(context)
-                .typography
-                .headline16Bold
-                .copyWith(color: CustomTheme.of(context).colors.neutral4),
-          ),
-          const Spacer(),
-          Text(
-            count.toString(),
-            style: CustomTheme.of(context)
-                .typography
-                .headline16Bold
-                .copyWith(color: digitColor),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          SvgPicture.asset(
-            AppIcons.arrowRightSquare,
-            width: 24,
-            height: 24,
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }

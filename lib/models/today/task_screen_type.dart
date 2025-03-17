@@ -1,0 +1,1 @@
+enum TaskScreenType { main, week }

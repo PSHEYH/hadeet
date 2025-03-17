@@ -9,7 +9,9 @@ class User extends Equatable {
       {required this.name, required this.token, required this.refreshToken});
 
   final String name;
+  @JsonKey(name: 'access_token')
   final String token;
+  @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
   @override

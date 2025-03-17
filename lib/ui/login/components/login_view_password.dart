@@ -12,13 +12,15 @@ class LoginViewPassword extends StatelessWidget {
       required this.onTap,
       required this.onContinue,
       required this.onLogin,
-      required this.isObscured});
+      required this.isObscured,
+      required this.onObscureTap});
 
   final bool isTextInput;
   final bool isObscured;
   final Function(String, String) onChangeText;
   final String email;
   final Function() onTap;
+  final Function() onObscureTap;
   final Function(BuildContext) onContinue;
   final Function(BuildContext) onLogin;
 
@@ -70,6 +72,7 @@ class LoginViewPassword extends StatelessWidget {
         PasswordTextField(
             isTextInput: isTextInput,
             onTap: onTap,
+            onObscureTap: onObscureTap,
             onChangeText: (String value) {
               onChangeText('password', value);
             },
