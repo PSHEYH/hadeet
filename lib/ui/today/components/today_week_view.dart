@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hadeet/bloc/today/today_cubit.dart';
 import 'package:hadeet/models/today/task_status_view.dart';
 import 'package:hadeet/ui/today/components/calendar_default_text.dart';
+import 'package:hadeet/ui/today/components/habit_card.dart';
 import 'package:hadeet/uikit/assets/icons.dart';
 import 'package:hadeet/uikit/themes/_app_colors.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
@@ -24,6 +25,8 @@ class TodayWeekView extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.read<TodayCubit>();
             return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TableCalendar(
                   daysOfWeekHeight: 32,
@@ -129,6 +132,9 @@ class TodayWeekView extends StatelessWidget {
                     return CalendarDefaultText(date: date);
                   }),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
                   children: [
                     Bounce(
@@ -218,10 +224,81 @@ class TodayWeekView extends StatelessWidget {
                   ),
                 ),
                 SingleChildScrollView(
-                  child: Row(children: [
-                    ...cubit.habits.map((e) => ).toList()
-                  ],)
-                )
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...cubit.habits
+                            .map((e) => Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: HabitCard(
+                                      isSquare: true,
+                                      title: e.title,
+                                      color: Color(e.color),
+                                      category: e.category,
+                                      completedCount: e.currentCount,
+                                      requiredCount: e.count),
+                                ))
+                            .toList()
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 12),
+                  child: Text(
+                    'Morning',
+                    style: CustomTheme.of(context)
+                        .typography
+                        .body14Medium
+                        .copyWith(
+                            color: CustomTheme.of(context).colors.neutral3),
+                  ),
+                ),
+                SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...cubit.habits
+                            .map((e) => Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: HabitCard(
+                                      isSquare: true,
+                                      title: e.title,
+                                      color: Color(e.color),
+                                      category: e.category,
+                                      completedCount: e.currentCount,
+                                      requiredCount: e.count),
+                                ))
+                            .toList()
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 12),
+                  child: Text(
+                    'Afternoon',
+                    style: CustomTheme.of(context)
+                        .typography
+                        .body14Medium
+                        .copyWith(
+                            color: CustomTheme.of(context).colors.neutral3),
+                  ),
+                ),
+                SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...cubit.habits
+                            .map((e) => Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: HabitCard(
+                                      isSquare: true,
+                                      title: e.title,
+                                      color: Color(e.color),
+                                      category: e.category,
+                                      completedCount: e.currentCount,
+                                      requiredCount: e.count),
+                                ))
+                            .toList()
+                      ],
+                    ))
               ],
             );
           },
