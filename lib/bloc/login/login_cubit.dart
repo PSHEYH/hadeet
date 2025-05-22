@@ -103,6 +103,19 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(isTextFieldActive: true));
   }
 
+  @override
+  void onChange(change) {
+    print('Current state: ${change.currentState}');
+    print('Next state: ${change.nextState}');
+    super.onChange(change);
+  }
+
+  @override
+  Future<void> close() async {
+    print('Bloc closed');
+    super.close();
+  }
+
   void onObscureTap() {
     emit(state.copyWith(
         isFirstTextFieldObscured: !state.isFirstTextFieldObscured));
