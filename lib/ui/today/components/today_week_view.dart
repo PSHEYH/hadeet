@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hadeet/bloc/today/today_cubit.dart';
+import 'package:hadeet/models/today/task_placement_type.dart';
 import 'package:hadeet/models/today/task_status_view.dart';
 import 'package:hadeet/ui/today/components/calendar_default_text.dart';
 import 'package:hadeet/ui/today/components/habit_card.dart';
@@ -138,10 +139,12 @@ class TodayWeekView extends StatelessWidget {
                 Row(
                   children: [
                     Bounce(
-                      onTap: () {},
+                      onTap: () {
+                        cubit.filter(TasksStatusView.inProgress);
+                      },
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 8),
                         decoration: BoxDecoration(
                             color: cubit.state.statusView ==
                                     TasksStatusView.inProgress
@@ -160,10 +163,12 @@ class TodayWeekView extends StatelessWidget {
                       ),
                     ),
                     Bounce(
-                      onTap: () {},
+                      onTap: () {
+                        cubit.filter(TasksStatusView.completed);
+                      },
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 8),
                         decoration: BoxDecoration(
                             color: cubit.state.statusView ==
                                     TasksStatusView.completed
@@ -182,10 +187,12 @@ class TodayWeekView extends StatelessWidget {
                       ),
                     ),
                     Bounce(
-                      onTap: () {},
+                      onTap: () {
+                        cubit.filter(TasksStatusView.overdue);
+                      },
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 8),
                         decoration: BoxDecoration(
                             color: cubit.state.statusView ==
                                     TasksStatusView.overdue
@@ -203,13 +210,18 @@ class TodayWeekView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Bounce(
+                        onTap: () {
+                          cubit.onChangeTasksPlacement();
+                        },
                         child: SvgPicture.asset(
-                      AppIcons.squareView,
-                      width: 24,
-                      height: 24,
-                    )),
+                          cubit.state.placementType == TasksPlacementType.blocks
+                              ? AppIcons.squareView
+                              : AppIcons.listView,
+                          width: 24,
+                          height: 24,
+                        )),
                   ],
                 ),
                 Padding(
@@ -224,23 +236,54 @@ class TodayWeekView extends StatelessWidget {
                   ),
                 ),
                 SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ...cubit.habits
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: HabitCard(
-                                      isSquare: true,
-                                      title: e.title,
-                                      color: Color(e.color),
-                                      category: e.category,
-                                      completedCount: e.currentCount,
-                                      requiredCount: e.count),
-                                ))
-                            .toList()
-                      ],
-                    )),
+                    scrollDirection:
+                        cubit.state.placementType == TasksPlacementType.blocks
+                            ? Axis.horizontal
+                            : Axis.vertical,
+                    child: cubit.state.placementType ==
+                            TasksPlacementType.blocks
+                        ? Row(
+                            children: [
+                              ...cubit.habits
+                                  .where(
+                                      (e) => e.status == cubit.state.statusView)
+                                  .map((e) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
+                                        child: HabitCard(
+                                          isSquare: true,
+                                          title: e.title,
+                                          color: Color(e.color),
+                                          category: e.category,
+                                          completedCount: e.currentCount,
+                                          requiredCount: e.count,
+                                          status: e.status,
+                                        ),
+                                      ))
+                                  .toList()
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              ...cubit.habits
+                                  .where(
+                                      (e) => e.status == cubit.state.statusView)
+                                  .map((e) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 16),
+                                        child: HabitCard(
+                                          isSquare: false,
+                                          title: e.title,
+                                          color: Color(e.color),
+                                          category: e.category,
+                                          completedCount: e.currentCount,
+                                          requiredCount: e.count,
+                                          status: e.status,
+                                        ),
+                                      ))
+                                  .toList()
+                            ],
+                          )),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0, bottom: 12),
                   child: Text(
@@ -252,24 +295,49 @@ class TodayWeekView extends StatelessWidget {
                             color: CustomTheme.of(context).colors.neutral3),
                   ),
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ...cubit.habits
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: HabitCard(
-                                      isSquare: true,
+                cubit.state.placementType == TasksPlacementType.blocks
+                    ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ...cubit.morningHabits
+                                .where(
+                                    (e) => e.status == cubit.state.statusView)
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: HabitCard(
+                                        isSquare: true,
+                                        title: e.title,
+                                        color: Color(e.color),
+                                        category: e.category,
+                                        completedCount: e.currentCount,
+                                        requiredCount: e.count,
+                                        status: e.status,
+                                      ),
+                                    ))
+                                .toList()
+                          ],
+                        ))
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ...cubit.morningHabits
+                              .where((e) => e.status == cubit.state.statusView)
+                              .map((e) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: HabitCard(
+                                      isSquare: false,
                                       title: e.title,
                                       color: Color(e.color),
                                       category: e.category,
                                       completedCount: e.currentCount,
-                                      requiredCount: e.count),
-                                ))
-                            .toList()
-                      ],
-                    )),
+                                      requiredCount: e.count,
+                                      status: e.status,
+                                    ),
+                                  ))
+                              .toList()
+                        ],
+                      ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0, bottom: 12),
                   child: Text(
@@ -281,24 +349,48 @@ class TodayWeekView extends StatelessWidget {
                             color: CustomTheme.of(context).colors.neutral3),
                   ),
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ...cubit.habits
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: HabitCard(
-                                      isSquare: true,
+                cubit.state.placementType == TasksPlacementType.blocks
+                    ? SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ...cubit.afternoonHabits
+                                .where(
+                                    (e) => e.status == cubit.state.statusView)
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: HabitCard(
+                                        isSquare: true,
+                                        title: e.title,
+                                        color: Color(e.color),
+                                        category: e.category,
+                                        completedCount: e.currentCount,
+                                        requiredCount: e.count,
+                                        status: e.status,
+                                      ),
+                                    ))
+                                .toList()
+                          ],
+                        ))
+                    : Column(
+                        children: [
+                          ...cubit.afternoonHabits
+                              .where((e) => e.status == cubit.state.statusView)
+                              .map((e) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: HabitCard(
+                                      isSquare: false,
                                       title: e.title,
                                       color: Color(e.color),
                                       category: e.category,
                                       completedCount: e.currentCount,
-                                      requiredCount: e.count),
-                                ))
-                            .toList()
-                      ],
-                    ))
+                                      requiredCount: e.count,
+                                      status: e.status,
+                                    ),
+                                  ))
+                              .toList()
+                        ],
+                      )
               ],
             );
           },

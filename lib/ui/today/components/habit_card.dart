@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadeet/models/today/task_status_view.dart';
 import 'package:hadeet/uikit/assets/images.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 
@@ -10,7 +11,9 @@ class HabitCard extends StatelessWidget {
       required this.color,
       required this.category,
       required this.completedCount,
-      required this.requiredCount});
+      required this.requiredCount,
+      required this.status,
+      this.countStreak = 0});
 
   final bool isSquare;
   final Color color;
@@ -18,6 +21,8 @@ class HabitCard extends StatelessWidget {
   final String category;
   final int completedCount;
   final int requiredCount;
+  final TasksStatusView status;
+  final int? countStreak;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +31,7 @@ class HabitCard extends StatelessWidget {
       width: isSquare
           ? MediaQuery.of(context).size.width * 0.416
           : double.infinity,
+      height: MediaQuery.of(context).size.height * 0.236,
       decoration: BoxDecoration(
           color: CustomTheme.of(context).colors.neutral1,
           borderRadius: BorderRadius.circular(20)),
@@ -52,14 +58,14 @@ class HabitCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Drink water',
+                    Text(title,
                         style: CustomTheme.of(context)
                             .typography
                             .headline16Bold
                             .copyWith(
                                 color:
                                     CustomTheme.of(context).colors.neutral4)),
-                    Text('Detox',
+                    Text(category,
                         style: CustomTheme.of(context)
                             .typography
                             .body14Semibold
@@ -74,8 +80,12 @@ class HabitCard extends StatelessWidget {
                         Spacer(),
                         Text(
                           '$completedCount/$requiredCount',
-                          style:
-                              CustomTheme.of(context).typography.caption12Bold,
+                          style: CustomTheme.of(context)
+                              .typography
+                              .caption12Bold
+                              .copyWith(
+                                  color:
+                                      CustomTheme.of(context).colors.neutral4),
                         ),
                       ],
                     ),
@@ -90,7 +100,9 @@ class HabitCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100)),
                       child: Container(
                         margin: EdgeInsets.only(
-                            right: (requiredCount - completedCount) * 100),
+                            right: ((requiredCount - completedCount) /
+                                    requiredCount) *
+                                100),
                         decoration: BoxDecoration(
                             color: color,
                             borderRadius: BorderRadius.circular(100)),
@@ -142,13 +154,25 @@ class HabitCard extends StatelessWidget {
                                         .neutral3)),
                       ],
                     ),
+                    Spacer(),
                     Column(
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(100)),
-                        ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 12),
+                            child: Text(
+                              '$completedCount/$requiredCount',
+                              style: CustomTheme.of(context)
+                                  .typography
+                                  .caption12Bold
+                                  .copyWith(
+                                      color: CustomTheme.of(context)
+                                          .colors
+                                          .neutral4),
+                            ),
+                            decoration: BoxDecoration(
+                                color: color,
+                                borderRadius: BorderRadius.circular(100))),
                         const SizedBox(
                           height: 4,
                         ),
@@ -164,6 +188,9 @@ class HabitCard extends StatelessWidget {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   height: 4,
                   width: (MediaQuery.of(context).size.width - 48),
@@ -172,8 +199,9 @@ class HabitCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100)),
                   child: Container(
                     margin: EdgeInsets.only(
-                        right: (requiredCount - completedCount) *
-                            (MediaQuery.of(context).size.width - 48)),
+                        right:
+                            ((requiredCount - completedCount) / requiredCount) *
+                                (MediaQuery.of(context).size.width - 48)),
                     decoration: BoxDecoration(
                         color: color, borderRadius: BorderRadius.circular(100)),
                   ),

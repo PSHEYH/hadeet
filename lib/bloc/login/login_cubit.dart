@@ -105,8 +105,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   @override
   void onChange(change) {
-    print('Current state: ${change.currentState}');
-    print('Next state: ${change.nextState}');
     super.onChange(change);
   }
 
@@ -122,7 +120,6 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void onClearTextField() {
-    print('cleaning textfield');
     textEditingController.clear();
     if (state.viewType == LoginViewType.email) {
       emit(state.copyWith(email: ''));

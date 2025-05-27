@@ -49,6 +49,16 @@ class HabitRepository {
               repeatType: RepeatType.daily,
               endDate: DateTime.now(),
               status: TasksStatusView.inProgress),
+          HabitEntity(
+              title: 'Meditation',
+              color: 0xFFFF8669,
+              count: 10,
+              currentCount: 10,
+              repeatDays: const [],
+              category: 'Healthy mind  & body',
+              repeatType: RepeatType.daily,
+              endDate: DateTime.now(),
+              status: TasksStatusView.completed),
         ];
   }
 }
