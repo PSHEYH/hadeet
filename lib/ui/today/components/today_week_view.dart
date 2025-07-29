@@ -26,8 +26,12 @@ class TodayWeekView extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.read<TodayCubit>();
             return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: cubit.habits
+                      .where((e) => e.status == cubit.state.statusView)
+                      .isNotEmpty
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: [
                 TableCalendar(
                   daysOfWeekHeight: 32,
@@ -36,7 +40,7 @@ class TodayWeekView extends StatelessWidget {
                       ? StartingDayOfWeek.sunday
                       : StartingDayOfWeek.monday,
                   onDaySelected: (DateTime lastDateTime, DateTime currentDate) {
-                    //// TODO on day selected
+                    cubit.onChangeCurrentDate(currentDate);
                   },
                   selectedDayPredicate: (DateTime dateTime) {
                     return isSameDay(dateTime, state.currentDate);
@@ -44,7 +48,7 @@ class TodayWeekView extends StatelessWidget {
                   headerVisible: false,
                   // locale: Get.locale?.languageCode,
                   calendarFormat: CalendarFormat.week,
-                  focusedDay: DateTime.now(),
+                  focusedDay: cubit.state.currentDate,
                   firstDay: DateTime(DateTime.now().year, DateTime.now().month,
                       DateTime.now().day - 365),
                   lastDay: DateTime(DateTime.now().year, DateTime.now().month,
@@ -87,6 +91,13 @@ class TodayWeekView extends StatelessWidget {
                           child: Center(
                             child: Text(
                               time.day.toString(),
+                              style: CustomTheme.of(context)
+                                  .typography
+                                  .body14Semibold
+                                  .copyWith(
+                                      color: CustomTheme.of(context)
+                                          .colors
+                                          .neutral3),
                             ),
                           )),
                     );
@@ -224,173 +235,227 @@ class TodayWeekView extends StatelessWidget {
                         )),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 12),
-                  child: Text(
-                    'Do anytime',
-                    style: CustomTheme.of(context)
-                        .typography
-                        .body14Medium
-                        .copyWith(
-                            color: CustomTheme.of(context).colors.neutral3),
-                  ),
-                ),
-                SingleChildScrollView(
-                    scrollDirection:
-                        cubit.state.placementType == TasksPlacementType.blocks
-                            ? Axis.horizontal
-                            : Axis.vertical,
-                    child: cubit.state.placementType ==
-                            TasksPlacementType.blocks
-                        ? Row(
-                            children: [
-                              ...cubit.habits
-                                  .where(
-                                      (e) => e.status == cubit.state.statusView)
-                                  .map((e) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 16),
-                                        child: HabitCard(
-                                          isSquare: true,
-                                          title: e.title,
-                                          color: Color(e.color),
-                                          category: e.category,
-                                          completedCount: e.currentCount,
-                                          requiredCount: e.count,
-                                          status: e.status,
-                                        ),
-                                      ))
-                                  .toList()
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              ...cubit.habits
-                                  .where(
-                                      (e) => e.status == cubit.state.statusView)
-                                  .map((e) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 16),
-                                        child: HabitCard(
-                                          isSquare: false,
-                                          title: e.title,
-                                          color: Color(e.color),
-                                          category: e.category,
-                                          completedCount: e.currentCount,
-                                          requiredCount: e.count,
-                                          status: e.status,
-                                        ),
-                                      ))
-                                  .toList()
-                            ],
-                          )),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 12),
-                  child: Text(
-                    'Morning',
-                    style: CustomTheme.of(context)
-                        .typography
-                        .body14Medium
-                        .copyWith(
-                            color: CustomTheme.of(context).colors.neutral3),
-                  ),
-                ),
-                cubit.state.placementType == TasksPlacementType.blocks
-                    ? SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ...cubit.morningHabits
-                                .where(
-                                    (e) => e.status == cubit.state.statusView)
-                                .map((e) => Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: HabitCard(
-                                        isSquare: true,
-                                        title: e.title,
-                                        color: Color(e.color),
-                                        category: e.category,
-                                        completedCount: e.currentCount,
-                                        requiredCount: e.count,
-                                        status: e.status,
-                                      ),
-                                    ))
-                                .toList()
-                          ],
-                        ))
-                    : Column(
+                cubit.habits
+                        .where((e) => e.status == cubit.state.statusView)
+                        .isNotEmpty
+                    ? Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ...cubit.morningHabits
+                          if (cubit.habits
                               .where((e) => e.status == cubit.state.statusView)
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: HabitCard(
-                                      isSquare: false,
-                                      title: e.title,
-                                      color: Color(e.color),
-                                      category: e.category,
-                                      completedCount: e.currentCount,
-                                      requiredCount: e.count,
-                                      status: e.status,
-                                    ),
-                                  ))
-                              .toList()
-                        ],
-                      ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 12),
-                  child: Text(
-                    'Afternoon',
-                    style: CustomTheme.of(context)
-                        .typography
-                        .body14Medium
-                        .copyWith(
-                            color: CustomTheme.of(context).colors.neutral3),
-                  ),
-                ),
-                cubit.state.placementType == TasksPlacementType.blocks
-                    ? SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ...cubit.afternoonHabits
-                                .where(
-                                    (e) => e.status == cubit.state.statusView)
-                                .map((e) => Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: HabitCard(
-                                        isSquare: true,
-                                        title: e.title,
-                                        color: Color(e.color),
-                                        category: e.category,
-                                        completedCount: e.currentCount,
-                                        requiredCount: e.count,
-                                        status: e.status,
-                                      ),
-                                    ))
-                                .toList()
-                          ],
-                        ))
-                    : Column(
-                        children: [
-                          ...cubit.afternoonHabits
+                              .isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 12),
+                              child: Text(
+                                'Do anytime',
+                                style: CustomTheme.of(context)
+                                    .typography
+                                    .body14Medium
+                                    .copyWith(
+                                        color: CustomTheme.of(context)
+                                            .colors
+                                            .neutral3),
+                              ),
+                            ),
+                          SingleChildScrollView(
+                              scrollDirection: cubit.state.placementType ==
+                                      TasksPlacementType.blocks
+                                  ? Axis.horizontal
+                                  : Axis.vertical,
+                              child: cubit.state.placementType ==
+                                      TasksPlacementType.blocks
+                                  ? Row(
+                                      children: [
+                                        ...cubit.habits
+                                            .where((e) =>
+                                                e.status ==
+                                                cubit.state.statusView)
+                                            .map((e) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 16),
+                                                  child: HabitCard(
+                                                    isSquare: true,
+                                                    title: e.title,
+                                                    color: Color(e.color),
+                                                    category: e.category,
+                                                    completedCount:
+                                                        e.currentCount,
+                                                    requiredCount: e.count,
+                                                    status: e.status,
+                                                  ),
+                                                ))
+                                            .toList()
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        ...cubit.habits
+                                            .where((e) =>
+                                                e.status ==
+                                                cubit.state.statusView)
+                                            .map((e) => Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 16),
+                                                  child: HabitCard(
+                                                    isSquare: false,
+                                                    title: e.title,
+                                                    color: Color(e.color),
+                                                    category: e.category,
+                                                    completedCount:
+                                                        e.currentCount,
+                                                    requiredCount: e.count,
+                                                    status: e.status,
+                                                  ),
+                                                ))
+                                            .toList()
+                                      ],
+                                    )),
+                          if (cubit.morningHabits
                               .where((e) => e.status == cubit.state.statusView)
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: HabitCard(
-                                      isSquare: false,
-                                      title: e.title,
-                                      color: Color(e.color),
-                                      category: e.category,
-                                      completedCount: e.currentCount,
-                                      requiredCount: e.count,
-                                      status: e.status,
-                                    ),
+                              .isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 12),
+                              child: Text(
+                                'Morning',
+                                style: CustomTheme.of(context)
+                                    .typography
+                                    .body14Medium
+                                    .copyWith(
+                                        color: CustomTheme.of(context)
+                                            .colors
+                                            .neutral3),
+                              ),
+                            ),
+                          cubit.state.placementType == TasksPlacementType.blocks
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      ...cubit.morningHabits
+                                          .where((e) =>
+                                              e.status ==
+                                              cubit.state.statusView)
+                                          .map((e) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 16),
+                                                child: HabitCard(
+                                                  isSquare: true,
+                                                  title: e.title,
+                                                  color: Color(e.color),
+                                                  category: e.category,
+                                                  completedCount:
+                                                      e.currentCount,
+                                                  requiredCount: e.count,
+                                                  status: e.status,
+                                                ),
+                                              ))
+                                          .toList()
+                                    ],
                                   ))
-                              .toList()
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ...cubit.morningHabits
+                                        .where((e) =>
+                                            e.status == cubit.state.statusView)
+                                        .map((e) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 16),
+                                              child: HabitCard(
+                                                isSquare: false,
+                                                title: e.title,
+                                                color: Color(e.color),
+                                                category: e.category,
+                                                completedCount: e.currentCount,
+                                                requiredCount: e.count,
+                                                status: e.status,
+                                              ),
+                                            ))
+                                        .toList()
+                                  ],
+                                ),
+                          if (cubit.afternoonHabits
+                              .where((e) => e.status == cubit.state.statusView)
+                              .isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 12),
+                              child: Text(
+                                'Afternoon',
+                                style: CustomTheme.of(context)
+                                    .typography
+                                    .body14Medium
+                                    .copyWith(
+                                        color: CustomTheme.of(context)
+                                            .colors
+                                            .neutral3),
+                              ),
+                            ),
+                          cubit.state.placementType == TasksPlacementType.blocks
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      ...cubit.afternoonHabits
+                                          .where((e) =>
+                                              e.status ==
+                                              cubit.state.statusView)
+                                          .map((e) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 16),
+                                                child: HabitCard(
+                                                  isSquare: true,
+                                                  title: e.title,
+                                                  color: Color(e.color),
+                                                  category: e.category,
+                                                  completedCount:
+                                                      e.currentCount,
+                                                  requiredCount: e.count,
+                                                  status: e.status,
+                                                ),
+                                              ))
+                                          .toList()
+                                    ],
+                                  ))
+                              : Column(
+                                  children: [
+                                    ...cubit.afternoonHabits
+                                        .where((e) =>
+                                            e.status == cubit.state.statusView)
+                                        .map((e) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 16),
+                                              child: HabitCard(
+                                                isSquare: false,
+                                                title: e.title,
+                                                color: Color(e.color),
+                                                category: e.category,
+                                                completedCount: e.currentCount,
+                                                requiredCount: e.count,
+                                                status: e.status,
+                                              ),
+                                            ))
+                                        .toList()
+                                  ],
+                                )
                         ],
                       )
+                    : Center(
+                        child: Text(
+                          'It\'s no tasks',
+                          style: CustomTheme.of(context)
+                              .typography
+                              .headline16Medium
+                              .copyWith(
+                                  color:
+                                      CustomTheme.of(context).colors.primary1),
+                        ),
+                      ),
               ],
             );
           },

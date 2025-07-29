@@ -18,7 +18,8 @@ LoginState _$LoginStateFromJson(Map<String, dynamic> json) => LoginState(
           json['isFirstTextFieldObscured'] as bool? ?? true,
       isSecondTextFieldObscured:
           json['isSecondTextFieldObscured'] as bool? ?? true,
-      isError: json['isError'] as bool? ?? false,
+      status: $enumDecodeNullable(_$LoginStatusEnumMap, json['status']) ??
+          LoginStatus.initial,
     );
 
 Map<String, dynamic> _$LoginStateToJson(LoginState instance) =>
@@ -30,8 +31,8 @@ Map<String, dynamic> _$LoginStateToJson(LoginState instance) =>
       'isTextFieldActive': instance.isTextFieldActive,
       'isFirstTextFieldObscured': instance.isFirstTextFieldObscured,
       'isSecondTextFieldObscured': instance.isSecondTextFieldObscured,
+      'status': _$LoginStatusEnumMap[instance.status]!,
       'viewType': _$LoginViewTypeEnumMap[instance.viewType]!,
-      'isError': instance.isError,
     };
 
 const _$LoginViewTypeEnumMap = {
@@ -39,4 +40,11 @@ const _$LoginViewTypeEnumMap = {
   LoginViewType.password: 'password',
   LoginViewType.signUpName: 'signUpName',
   LoginViewType.signUpRepeatPassword: 'signUpRepeatPassword',
+};
+
+const _$LoginStatusEnumMap = {
+  LoginStatus.initial: 'initial',
+  LoginStatus.loading: 'loading',
+  LoginStatus.success: 'success',
+  LoginStatus.error: 'error',
 };

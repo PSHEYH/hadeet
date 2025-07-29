@@ -2,6 +2,7 @@ import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hadeet/bloc/today/today_cubit.dart';
 import 'package:hadeet/models/today/task_screen_type.dart';
 import 'package:hadeet/ui/settings/settings_screen.dart';
@@ -16,50 +17,52 @@ class TodayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        bottom: false,
         child: BlocBuilder<TodayCubit, TodayState>(builder: (context, state) {
-      final cubit = context.read<TodayCubit>();
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              children: [
-                Bounce(
-                    onTap: () {
-                      Navigator.of(context).push(SettingsScreen.route());
-                    },
-                    child: SvgPicture.asset(
-                      AppIcons.profile,
-                      height: 28,
-                      width: 28,
-                    )),
-                const Spacer(),
-                Image.asset(
-                  AppImages.avatar,
-                  width: 40,
-                  height: 40,
+          final cubit = context.read<TodayCubit>();
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  children: [
+                    Bounce(
+                        onTap: () {
+                          GoRouter.of(context)
+                              .pushNamed(SettingsScreen.routeName);
+                        },
+                        child: SvgPicture.asset(
+                          AppIcons.profile,
+                          height: 28,
+                          width: 28,
+                        )),
+                    const Spacer(),
+                    Image.asset(
+                      AppImages.avatar,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Flexible(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: cubit.state.type == TaskScreenType.main
-                    ? TodayMainView(
-                        name: cubit.user.name,
-                      )
-                    : TodayWeekView(),
               ),
-            ),
-          ),
-        ],
-      );
-    }));
+              const SizedBox(
+                height: 16,
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: cubit.state.type == TaskScreenType.main
+                        ? TodayMainView(
+                            name: cubit.user.name,
+                          )
+                        : TodayWeekView(),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }));
   }
 }

@@ -6,14 +6,7 @@ import 'package:hadeet/ui/onboarding/onboarding_view.dart';
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
-  const OnboardingScreen._();
-
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
-      settings: const RouteSettings(name: '/onboarding'),
-      builder: (_) => const OnboardingScreen._(),
-    );
-  }
+  static String routeName = '/onboarding';
 
   @override
   Widget build(BuildContext context) {

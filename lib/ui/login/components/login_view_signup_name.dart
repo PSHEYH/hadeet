@@ -64,7 +64,9 @@ class LoginViewSignupName extends StatelessWidget {
           height: 12,
         ),
         DefaultTextField(
+            color: CustomTheme.of(context).colors.primary1,
             isTextInput: isTextInput,
+            hintText: 'Enter name',
             onTap: onTap,
             onChangeText: (String value) {
               onChangeText('name', value);

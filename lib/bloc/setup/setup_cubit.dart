@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hadeet/ui/setup/components/choose_habit_body.dart';
 import 'package:hadeet/ui/today/today_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -71,7 +72,7 @@ class SetupCubit extends Cubit<SetupState> {
     //   Navigator.of(buildContext).pop();
     // }
     if (buildContext.mounted) {
-      await Navigator.push(buildContext, TodayScreen.route());
+      GoRouter.of(buildContext).pushNamed(TodayScreen.routeName);
     }
   }
 

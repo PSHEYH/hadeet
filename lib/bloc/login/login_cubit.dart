@@ -5,8 +5,6 @@ import 'package:hadeet/models/login_view_type.dart';
 import 'package:hadeet/models/user/user.dart';
 import 'package:hadeet/repositories/user_repository.dart';
 import 'package:hadeet/ui/setup/setup_screen.dart';
-import 'package:hadeet/ui/today/today_screen.dart';
-import 'package:hadeet/uikit/themes/_theme.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -20,6 +18,7 @@ class LoginCubit extends Cubit<LoginState> {
   final UserRepository _userRepository = UserRepository.instance;
   FocusNode focusNode = FocusNode();
   int countOfScreens = 0;
+  String errorMessage = '';
 
   onChangeText(String type, String value) {
     if (type == 'email') {
@@ -31,27 +30,6 @@ class LoginCubit extends Cubit<LoginState> {
     } else {
       emit(state.copyWith(reEnterPassword: value));
     }
-  }
-
-  SnackBar getSnackBar(BuildContext context, String message) {
-    return SnackBar(
-      backgroundColor: CustomTheme.of(context).colors.semantic5,
-      behavior: SnackBarBehavior.floating,
-      elevation: 6,
-      content: Text(
-        message,
-        style: CustomTheme.of(context)
-            .typography
-            .body14Medium
-            .copyWith(color: CustomTheme.of(context).colors.neutral4),
-      ),
-      action: SnackBarAction(
-        label: 'Undo',
-        onPressed: () {
-          // Some code to undo the change.
-        },
-      ),
-    );
   }
 
   void onContinueTap(BuildContext context) async {
@@ -68,25 +46,26 @@ class LoginCubit extends Cubit<LoginState> {
         User user = await ApiService.signUp(
             email: state.email, password: state.password, name: state.name);
         _userRepository.saveUser(user);
-        Navigator.of(context).push(SetupScreen.route());
+        if (context.mounted) {
+          Navigator.of(context).push(SetupScreen.route());
+        }
       } on ApiException catch (e) {
-        final snackBar = getSnackBar(context, e.message);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        errorMessage = e.message;
       }
     }
   }
 
-  void login(BuildContext context) async {
+  void login() async {
     try {
+      emit(state.copyWith(status: LoginStatus.loading));
       User user =
           await ApiService.login(email: state.email, password: state.password);
 
+      emit(state.copyWith(status: LoginStatus.success));
       _userRepository.saveUser(user);
-      print(user);
-      Navigator.of(context).push(TodayScreen.route());
     } on ApiException catch (e) {
-      final snackBar = getSnackBar(context, e.message);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      errorMessage = e.message;
+      emit(state.copyWith(status: LoginStatus.error));
     }
   }
 
@@ -101,6 +80,10 @@ class LoginCubit extends Cubit<LoginState> {
 
   void onTextFieldTap() {
     emit(state.copyWith(isTextFieldActive: true));
+  }
+
+  void returnToInitial() {
+    emit(state.copyWith(status: LoginStatus.initial));
   }
 
   @override

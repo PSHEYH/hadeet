@@ -11,17 +11,16 @@ class SetupScreen extends StatelessWidget {
   static Route<void> route() {
     return MaterialPageRoute<void>(
       settings: const RouteSettings(name: '/setup'),
-      builder: (_) => const SetupScreen._(),
+      builder: (_) => BlocProvider(
+        create: (context) => SetupCubit(),
+        child: const SetupScreen._(),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color(0xFF12151B),
-        body: BlocProvider(
-          create: (context) => SetupCubit(),
-          child: const SetupView(),
-        ));
+    return const Scaffold(
+        backgroundColor: Color(0xFF12151B), body: SetupView());
   }
 }

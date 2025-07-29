@@ -1,5 +1,12 @@
 part of 'login_cubit.dart';
 
+enum LoginStatus {
+  initial,
+  loading,
+  success,
+  error,
+}
+
 @JsonSerializable()
 final class LoginState extends Equatable {
   const LoginState(
@@ -11,7 +18,7 @@ final class LoginState extends Equatable {
       this.viewType = LoginViewType.email,
       this.isFirstTextFieldObscured = true,
       this.isSecondTextFieldObscured = true,
-      this.isError = false});
+      this.status = LoginStatus.initial});
 
   final String email;
   final String password;
@@ -20,8 +27,8 @@ final class LoginState extends Equatable {
   final bool isTextFieldActive;
   final bool isFirstTextFieldObscured;
   final bool isSecondTextFieldObscured;
+  final LoginStatus status;
   final LoginViewType viewType;
-  final bool isError;
 
   factory LoginState.fromJson(Map<String, dynamic> json) =>
       _$LoginStateFromJson(json);
@@ -37,7 +44,7 @@ final class LoginState extends Equatable {
         isTextFieldActive,
         viewType,
         isFirstTextFieldObscured,
-        isError
+        status
       ];
 
   LoginState copyWith(
@@ -49,7 +56,7 @@ final class LoginState extends Equatable {
       LoginViewType? viewType,
       bool? isFirstTextFieldObscured,
       bool? isSecondTextFieldObscured,
-      bool? isError}) {
+      LoginStatus? status}) {
     return LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
@@ -61,6 +68,6 @@ final class LoginState extends Equatable {
             isFirstTextFieldObscured ?? this.isFirstTextFieldObscured,
         isSecondTextFieldObscured:
             isSecondTextFieldObscured ?? this.isSecondTextFieldObscured,
-        isError: isError ?? this.isError);
+        status: status ?? this.status);
   }
 }

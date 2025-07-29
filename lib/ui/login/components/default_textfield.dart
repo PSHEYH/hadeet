@@ -5,14 +5,16 @@ import 'package:hadeet/uikit/assets/icons.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 
 class DefaultTextField extends StatelessWidget {
-  const DefaultTextField(
-      {super.key,
-      required this.isTextInput,
-      required this.onChangeText,
-      required this.onTap,
-      this.onClose,
-      this.textEditingController,
-      this.hintText = 'Enter email'});
+  const DefaultTextField({
+    super.key,
+    required this.isTextInput,
+    required this.onChangeText,
+    required this.onTap,
+    required this.color,
+    this.onClose,
+    this.textEditingController,
+    this.hintText = 'Enter email',
+  });
 
   final bool isTextInput;
   final Function(String) onChangeText;
@@ -20,6 +22,7 @@ class DefaultTextField extends StatelessWidget {
   final Function()? onClose;
   final String hintText;
   final TextEditingController? textEditingController;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class DefaultTextField extends StatelessWidget {
       children: [
         if (isTextInput)
           Container(
-            color: CustomTheme.of(context).colors.primary1,
+            color: color,
             height: 2,
           ),
         TextField(
@@ -36,8 +39,9 @@ class DefaultTextField extends StatelessWidget {
           style: CustomTheme.of(context).typography.headline16Bold.copyWith(
                 color: CustomTheme.of(context).colors.neutral4,
               ),
-          cursorColor: CustomTheme.of(context).colors.primary1,
+          cursorColor: color,
           autofocus: false,
+          keyboardAppearance: Brightness.dark,
           keyboardType: TextInputType.text,
           onChanged: (value) {
             onChangeText(value);

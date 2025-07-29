@@ -8,6 +8,7 @@ import 'package:hadeet/uikit/themes/_theme.dart';
 class PasswordTextField extends DefaultTextField {
   const PasswordTextField(
       {super.key,
+      required super.color,
       required super.isTextInput,
       required super.onChangeText,
       required super.onTap,
@@ -24,7 +25,7 @@ class PasswordTextField extends DefaultTextField {
       style: CustomTheme.of(context).typography.headline16Bold.copyWith(
             color: CustomTheme.of(context).colors.neutral4,
           ),
-      cursorColor: CustomTheme.of(context).colors.primary1,
+      cursorColor: color,
       autofocus: false,
       keyboardType: TextInputType.text,
       onChanged: (value) {

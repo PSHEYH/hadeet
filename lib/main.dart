@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hadeet/routes.dart';
-import 'package:hadeet/ui/splash/splash_screen.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 import 'package:hadeet/widgets/dismiss_keyboard.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTheme(
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         builder: (context, child) => DismissKeyboard(child: child),
         theme: ThemeData(
@@ -34,8 +33,7 @@ class MyApp extends StatelessWidget {
             surfaceTintColor: Colors.transparent,
           ),
         ),
-        initialRoute: SplashScreen.route().settings.name,
-        routes: routes,
+        routerConfig: router,
       ),
     );
   }

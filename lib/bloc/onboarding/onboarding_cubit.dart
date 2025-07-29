@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hadeet/ui/login/login_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -52,9 +53,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   void loginWithEmail(BuildContext context) {
-    Navigator.of(context).push<void>(
-      LoginScreen.route(),
-    );
+    GoRouter.of(context).pushNamed(LoginScreen.routeName);
   }
 
   void loginWithGoogle() {}

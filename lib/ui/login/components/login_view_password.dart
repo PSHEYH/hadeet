@@ -22,7 +22,7 @@ class LoginViewPassword extends StatelessWidget {
   final Function() onTap;
   final Function() onObscureTap;
   final Function(BuildContext) onContinue;
-  final Function(BuildContext) onLogin;
+  final Function() onLogin;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +70,7 @@ class LoginViewPassword extends StatelessWidget {
           height: 12,
         ),
         PasswordTextField(
+            color: CustomTheme.of(context).colors.primary1,
             isTextInput: isTextInput,
             onTap: onTap,
             onObscureTap: onObscureTap,
@@ -82,7 +83,7 @@ class LoginViewPassword extends StatelessWidget {
           child: ButtonPrimaryText(
               text: 'Continue',
               onTap: () {
-                onLogin(context);
+                onLogin();
               }),
         ),
         Padding(

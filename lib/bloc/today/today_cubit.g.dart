@@ -13,6 +13,9 @@ TodayState _$TodayStateFromJson(Map<String, dynamic> json) => TodayState(
       statusView:
           $enumDecodeNullable(_$TasksStatusViewEnumMap, json['statusView']) ??
               TasksStatusView.completed,
+      placementType: $enumDecodeNullable(
+              _$TasksPlacementTypeEnumMap, json['placementType']) ??
+          TasksPlacementType.blocks,
     );
 
 Map<String, dynamic> _$TodayStateToJson(TodayState instance) =>
@@ -20,6 +23,7 @@ Map<String, dynamic> _$TodayStateToJson(TodayState instance) =>
       'statusView': _$TasksStatusViewEnumMap[instance.statusView]!,
       'currentDate': instance.currentDate.toIso8601String(),
       'type': _$TaskScreenTypeEnumMap[instance.type]!,
+      'placementType': _$TasksPlacementTypeEnumMap[instance.placementType]!,
     };
 
 const _$TaskScreenTypeEnumMap = {
@@ -31,4 +35,9 @@ const _$TasksStatusViewEnumMap = {
   TasksStatusView.inProgress: 'inProgress',
   TasksStatusView.completed: 'completed',
   TasksStatusView.overdue: 'overdue',
+};
+
+const _$TasksPlacementTypeEnumMap = {
+  TasksPlacementType.blocks: 'blocks',
+  TasksPlacementType.cards: 'cards',
 };

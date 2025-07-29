@@ -8,12 +8,7 @@ class SettingsScreen extends StatelessWidget {
 
   const SettingsScreen._();
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
-      settings: const RouteSettings(name: '/settings'),
-      builder: (_) => const SettingsScreen._(),
-    );
-  }
+  static String routeName = '/settings';
 
   @override
   Widget build(BuildContext context) {

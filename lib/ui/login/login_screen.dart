@@ -7,14 +7,7 @@ import 'package:hadeet/uikit/themes/_theme.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  const LoginScreen._();
-
-  static Route<void> route() {
-    return MaterialPageRoute<void>(
-      settings: const RouteSettings(name: '/login'),
-      builder: (_) => const LoginScreen._(),
-    );
-  }
+  static String routeName = '/login';
 
   @override
   Widget build(BuildContext context) {

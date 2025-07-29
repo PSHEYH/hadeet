@@ -31,66 +31,56 @@ class HabitCard extends StatelessWidget {
       width: isSquare
           ? MediaQuery.of(context).size.width * 0.416
           : double.infinity,
-      height: MediaQuery.of(context).size.height * 0.236,
+      height: isSquare
+          ? MediaQuery.of(context).size.height * 0.236
+          : MediaQuery.of(context).size.height * 0.138,
       decoration: BoxDecoration(
           color: CustomTheme.of(context).colors.neutral1,
           borderRadius: BorderRadius.circular(20)),
       child: isSquare
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ? Stack(
               children: [
-                SizedBox.square(
-                  dimension: 48,
-                  child: Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: color,
-                            borderRadius: BorderRadius.circular(12)),
-                      ),
-                      Image.asset(AppImages.pencils),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(title,
-                        style: CustomTheme.of(context)
-                            .typography
-                            .headline16Bold
-                            .copyWith(
-                                color:
-                                    CustomTheme.of(context).colors.neutral4)),
-                    Text(category,
-                        style: CustomTheme.of(context)
-                            .typography
-                            .body14Semibold
-                            .copyWith(
-                                color:
-                                    CustomTheme.of(context).colors.neutral3)),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Spacer(),
-                        Text(
-                          '$completedCount/$requiredCount',
-                          style: CustomTheme.of(context)
-                              .typography
-                              .caption12Bold
-                              .copyWith(
-                                  color:
-                                      CustomTheme.of(context).colors.neutral4),
+                        SizedBox.square(
+                          dimension: 48,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: BorderRadius.circular(12)),
+                              ),
+                              Image.asset(AppImages.pencils),
+                            ],
+                          ),
                         ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Text(title,
+                            style: CustomTheme.of(context)
+                                .typography
+                                .headline16Bold
+                                .copyWith(
+                                    color: CustomTheme.of(context)
+                                        .colors
+                                        .neutral4)),
+                        Text(category,
+                            style: CustomTheme.of(context)
+                                .typography
+                                .body14Semibold
+                                .copyWith(
+                                    color: CustomTheme.of(context)
+                                        .colors
+                                        .neutral3)),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 12,
                     ),
                     Container(
                       height: 4,
@@ -109,7 +99,19 @@ class HabitCard extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.037,
+                  right: 0,
+                  child: Text(
+                    '$completedCount/$requiredCount',
+                    style: CustomTheme.of(context)
+                        .typography
+                        .caption12Bold
+                        .copyWith(
+                            color: CustomTheme.of(context).colors.neutral4),
+                  ),
+                ),
               ],
             )
           : Column(

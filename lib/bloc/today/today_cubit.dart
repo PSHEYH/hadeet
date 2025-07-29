@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hadeet/models/today/habit_entity.dart';
+import 'package:hadeet/models/today/repeat_type.dart';
 import 'package:hadeet/models/today/task_placement_type.dart';
 import 'package:hadeet/models/today/task_screen_type.dart';
 import 'package:hadeet/models/today/task_status_view.dart';
@@ -27,17 +29,39 @@ class TodayCubit extends Cubit<TodayState> {
   late final List<HabitEntity> habits;
 
   List<HabitEntity> get morningHabits {
-    return habits.where((e) => e.endDate.hour < 12).toList();
+    return habits
+        .where((e) =>
+            e.repeatType == RepeatType.daily ||
+            (e.repeatType == RepeatType.weekly &&
+                e.endDate.weekday == state.currentDate.weekday) ||
+            (e.repeatType == RepeatType.monthly &&
+                e.endDate.day == state.currentDate.day))
+        .where((e) => e.endDate.hour < 12)
+        .toList();
   }
 
   List<HabitEntity> get afternoonHabits {
     return habits
+        .where((e) =>
+            e.repeatType == RepeatType.daily ||
+            (e.repeatType == RepeatType.weekly &&
+                e.endDate.weekday == state.currentDate.weekday) ||
+            (e.repeatType == RepeatType.monthly &&
+                e.endDate.day == state.currentDate.day))
         .where((e) => e.endDate.hour >= 12 && e.endDate.hour <= 14)
         .toList();
   }
 
   List<HabitEntity> get eveningHabits {
-    return habits.where((e) => e.endDate.hour > 14).toList();
+    return habits
+        .where((e) =>
+            e.repeatType == RepeatType.daily ||
+            (e.repeatType == RepeatType.weekly &&
+                e.endDate.weekday == state.currentDate.weekday) ||
+            (e.repeatType == RepeatType.monthly &&
+                e.endDate.day == state.currentDate.day))
+        .where((e) => e.endDate.hour > 14)
+        .toList();
   }
 
   upperCaseFirstLetter(String value) {
@@ -61,5 +85,9 @@ class TodayCubit extends Cubit<TodayState> {
         placementType: state.placementType == TasksPlacementType.blocks
             ? TasksPlacementType.cards
             : TasksPlacementType.blocks));
+  }
+
+  onChangeCurrentDate(DateTime date) {
+    emit(state.copyWith(currentDate: date));
   }
 }
