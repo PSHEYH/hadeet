@@ -23,7 +23,7 @@ class HabitCalendarDialog extends StatelessWidget {
               builder: (context, state) {
                 final cubit = context.read<HabitCreationCubit>();
                 return TableCalendar(
-                  focusedDay: state.currentDate,
+                  focusedDay: state.currentDate ?? DateTime.now(),
                   firstDay: DateTime((DateTime.now().year - 1),
                       DateTime.now().month, DateTime.now().day),
                   lastDay: DateTime((DateTime.now().year + 3),

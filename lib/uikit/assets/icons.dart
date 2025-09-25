@@ -18,4 +18,5 @@ class AppIcons {
   static const String squareView = 'assets/icons/square_view.svg';
   static const String listView = 'assets/icons/list_view.svg';
   static const String star = 'assets/icons/star.svg';
+  static const String clock = 'assets/icons/clock.svg';
 }

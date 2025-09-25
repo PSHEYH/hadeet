@@ -18,8 +18,8 @@ class HabitCreationView extends StatelessWidget {
           FocusScope.of(context).unfocus();
         },
         child: state.isChoosingCategories
-            ? HabitCreationMenu()
-            : HabitCreationBody(),
+            ? const HabitCreationMenu()
+            : const HabitCreationBody(),
       );
     });
   }

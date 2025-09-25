@@ -2,28 +2,31 @@ part of 'habit_creation_cubit.dart';
 
 @JsonSerializable()
 final class HabitCreationState extends Equatable {
-  HabitCreationState(
-      {required this.currentDate,
+  const HabitCreationState(
+      {
       required this.chosenColor,
       required this.repeatType,
       required this.amount,
       required this.reminders,
-      this.repeatWeekDay = 0,
+        this.currentDate,
+        this.isSettingReminders = false,
+      this.repeatWeekDays = const [],
       this.repeatDay = 0,
       this.isChoosingCategories = true,
       this.isKeyboardActive = false,
       this.isChoosingColors = false});
 
-  final DateTime currentDate;
+  final DateTime? currentDate;
   final bool isChoosingCategories;
   final int chosenColor;
   final RepeatType repeatType;
-  final int repeatWeekDay;
+  final List<int> repeatWeekDays;
   final int repeatDay;
   final int amount;
   final List<DateTime> reminders;
   final bool isKeyboardActive;
   final bool isChoosingColors;
+  final bool isSettingReminders;
 
   factory HabitCreationState.fromJson(Map<String, dynamic> json) =>
       _$HabitCreationStateFromJson(json);
@@ -36,11 +39,13 @@ final class HabitCreationState extends Equatable {
         isChoosingCategories,
         chosenColor,
         repeatDay,
-        repeatWeekDay,
+        repeatWeekDays,
         amount,
         reminders,
         isChoosingColors,
-        isKeyboardActive
+        isKeyboardActive,
+    repeatType,
+    isSettingReminders
       ];
 
   HabitCreationState copyWith({
@@ -49,11 +54,12 @@ final class HabitCreationState extends Equatable {
     int? chosenColor,
     RepeatType? repeatType,
     int? repeatDay,
-    int? repeatWeekDay,
+    List<int>? repeatWeekDays,
     int? amount,
     List<DateTime>? reminders,
     bool? isKeyboardActive,
     bool? isChoosingColors,
+    bool? isSettingReminders,
   }) {
     return HabitCreationState(
         currentDate: currentDate ?? this.currentDate,
@@ -61,10 +67,12 @@ final class HabitCreationState extends Equatable {
         chosenColor: chosenColor ?? this.chosenColor,
         repeatType: repeatType ?? this.repeatType,
         repeatDay: repeatDay ?? this.repeatDay,
-        repeatWeekDay: repeatWeekDay ?? this.repeatWeekDay,
+        repeatWeekDays: repeatWeekDays ?? this.repeatWeekDays,
         amount: amount ?? this.amount,
         reminders: reminders ?? this.reminders,
         isKeyboardActive: isKeyboardActive ?? this.isKeyboardActive,
-        isChoosingColors: isChoosingColors ?? this.isChoosingColors);
+        isChoosingColors: isChoosingColors ?? this.isChoosingColors,
+        isSettingReminders: isSettingReminders ?? this.isSettingReminders
+    );
   }
 }

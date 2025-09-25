@@ -16,8 +16,13 @@ class HabitCreationCubit extends Cubit<HabitCreationState> {
     0xFFCDE7FF,
     0xFFE2BDFF,
     0xFFFFA2C0,
-    0xFFCDE7FF,
-    0xFFA5F59C
+    0xFFFFCE73,
+    0xFFA5F59C,
+    0xFF558CE4
+  ];
+
+  List<String> daysOfWeek = [
+    'M','T','W','T','F','S','S'
   ];
 
   TextEditingController textEditingController = TextEditingController();
@@ -50,11 +55,38 @@ class HabitCreationCubit extends Cubit<HabitCreationState> {
     emit(state.copyWith(currentDate: date));
   }
 
+  void toggleGetReminders(bool value){
+    emit(state.copyWith(isSettingReminders: value));
+  }
+
+  void toggleGetRemindersAlt(){
+    if(state.isSettingReminders){
+      emit(state.copyWith(isSettingReminders: false, reminders: []));
+    } else {
+      emit(state.copyWith(isSettingReminders: true, reminders: [DateTime.now().copyWith(hour: 8, minute: 0)]));
+    }
+  }
+
+  void onChangeColor(){
+    emit(state.copyWith(isChoosingColors: !state.isChoosingColors));
+  }
+
   String upperCaseFirstLetter(String value) {
     return '${value[0].toUpperCase()}${value.substring(1)}';
   }
 
   void goToCreation() {
     emit(state.copyWith(isChoosingCategories: false));
+  }
+
+  void onSelectWeekDay(int weekDayIndex){
+    emit(state.copyWith(repeatWeekDays: state.repeatWeekDays.contains(weekDayIndex) ? state.repeatWeekDays.where((e) => e != weekDayIndex).toList() : <int>[...state.repeatWeekDays, weekDayIndex]));
+  }
+
+  void onDeleteReminder(DateTime time){
+    emit(state.copyWith(reminders: state.reminders.where((e) => e.hour != time.hour || e.minute != time.minute).toList()));
+  }
+  void onReminderTap(){
+
   }
 }
