@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hadeet/models/today/habit_entity.dart';
 import 'package:hadeet/models/today/repeat_type.dart';
+import 'package:hadeet/models/today/task_status_view.dart';
+import 'package:hadeet/repositories/habit_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'habit_creation_cubit.g.dart';
@@ -26,6 +29,7 @@ class HabitCreationCubit extends Cubit<HabitCreationState> {
   ];
 
   TextEditingController textEditingController = TextEditingController();
+  final HabitRepository _habitRepository = HabitRepository.instance;
 
   HabitCreationCubit()
       : super(HabitCreationState(
@@ -48,11 +52,19 @@ class HabitCreationCubit extends Cubit<HabitCreationState> {
   }
 
   changeRepeatType(RepeatType type) {
-    emit(state.copyWith(repeatType: type));
+    if(type == RepeatType.daily){
+      emit(state.copyWith(repeatType: type, repeatWeekDays: [1,2,3,4,5,6,7]));
+    } else if (type == RepeatType.weekly && state.repeatType != RepeatType.weekly){
+      emit(state.copyWith(repeatType: type, repeatWeekDays: [1]));
+    } else if (type == RepeatType.monthly){
+      emit(state.copyWith(repeatType: type, repeatWeekDays: null));
+    } else {
+      emit(state.copyWith(repeatType: type, repeatWeekDays: state.repeatWeekDays));
+    }
   }
 
   selectDay(DateTime date) {
-    emit(state.copyWith(currentDate: date));
+    emit(state.copyWith(currentDate: date, repeatType: RepeatType.monthly));
   }
 
   void toggleGetReminders(bool value){
@@ -88,5 +100,9 @@ class HabitCreationCubit extends Cubit<HabitCreationState> {
   }
   void onReminderTap(){
 
+  }
+
+  void saveHabit(){
+    _habitRepository.saveHabit(HabitEntity(title: textEditingController.text, color: state.chosenColor, count: state.amount, currentCount: 0, repeatDays: state.repeatWeekDays, category: 'Detox', repeatType: state.repeatType, endDate: state.currentDate ?? DateTime.now(), status: TasksStatusView.inProgress));
   }
 }

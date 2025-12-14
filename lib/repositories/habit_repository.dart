@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_storage/get_storage.dart';
 import 'package:hadeet/models/today/habit_entity.dart';
 import 'package:hadeet/models/today/repeat_type.dart';
@@ -10,7 +12,12 @@ class HabitRepository {
 
   final _box = GetStorage();
 
-  void saveHabit(HabitEntity habit) {}
+  void saveHabit(HabitEntity habit) {
+    final habits = getHabits();
+    final list = [...habits, habit];
+    final json = jsonEncode(list.map((e) => e.toJson()));
+    _box.write('habits', json);
+  }
 
   List<HabitEntity> getHabits() {
     final res = _box.read('habits');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hadeet/bloc/habit_creation/habit_creation_cubit.dart';
 import 'package:hadeet/uikit/themes/_theme.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class HabitCalendarDialog extends StatelessWidget {
             color: CustomTheme.of(context).colors.neutral1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
             BlocBuilder<HabitCreationCubit, HabitCreationState>(
               builder: (context, state) {
@@ -29,7 +31,7 @@ class HabitCalendarDialog extends StatelessWidget {
                   lastDay: DateTime((DateTime.now().year + 3),
                       DateTime.now().month, DateTime.now().day),
                   daysOfWeekHeight: 32,
-                  rowHeight: 32,
+                  rowHeight: 40,
                   selectedDayPredicate: (date) {
                     return isSameDay(state.currentDate, date);
                   },
@@ -47,7 +49,9 @@ class HabitCalendarDialog extends StatelessWidget {
                         color: Color(0xFF2D2D2C),
                       ),
                       rightChevronIcon:
-                          Icon(Icons.chevron_right, color: Color(0xFF2D2D2C))),
+                          Icon(Icons.chevron_right, color: Color(0xFF2D2D2C)),
+
+                  ),
                   calendarStyle: CalendarStyle(
                       outsideDaysVisible: false,
                       defaultTextStyle: CustomTheme.of(context)
@@ -78,15 +82,15 @@ class HabitCalendarDialog extends StatelessWidget {
                       selectedDecoration: BoxDecoration(
                           color: CustomTheme.of(context).colors.primary1,
                           shape: BoxShape.circle),
-                      cellMargin: const EdgeInsets.all(7),
-                      todayDecoration: BoxDecoration(color: CustomTheme.of(context).colors.neutral3, shape: BoxShape.circle)),
+
+                  ),
                   calendarBuilders:
                       CalendarBuilders(dowBuilder: (context, date) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 11.0),
+                    return Center(
+
                       child: Text(
                           cubit.upperCaseFirstLetter(
-                              DateFormat('E', 'en_US').format(date)),
+                              DateFormat('E', 'en_US').format(date)[0]),
                           style: CustomTheme.of(context)
                               .typography
                               .caption12Bold
@@ -108,41 +112,79 @@ class HabitCalendarDialog extends StatelessWidget {
                       ),
                     );
                   }, defaultBuilder: (context, firstDateTime, secondDateTime) {
-                    return Center(
-                      child: Text(
-                        firstDateTime.day.toString(),
-                        style: CustomTheme.of(context)
-                            .typography
-                            .body14Medium
-                            .copyWith(
-                                color: CustomTheme.of(context).colors.neutral4),
+                    return SizedBox(
+                      width: 32,
+                      height: 32,
+                      child: Center(
+                        child: Text(
+                          firstDateTime.day.toString(),
+                          style: CustomTheme.of(context)
+                              .typography
+                              .body14Medium
+                              .copyWith(
+                                  color: CustomTheme.of(context).colors.neutral4),
+                        ),
                       ),
                     );
-                  }),
+                  }, selectedBuilder: (context, firstDateTime, secondDateTime) {
+                        return Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: CustomTheme.of(context).colors.primary1,
+                            shape: BoxShape.circle
+                          ),
+                          child: Center(
+                            child: Text(firstDateTime.day.toString(), style: CustomTheme.of(context).typography.body14Semibold.copyWith(color: CustomTheme.of(context).colors.neutral4),),
+                          ),
+                        );
+                      },
+                      todayBuilder: (context, first, second) {
+                        return Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                              color: CustomTheme.of(context).colors.neutral3,
+                              shape: BoxShape.circle
+                          ),
+                          child: Center(
+                            child: Text(first.day.toString(), style: CustomTheme.of(context).typography.body14Semibold.copyWith(color: CustomTheme.of(context).colors.neutral4),),
+                          ),
+                        );
+                      },),
                 );
               },
             ),
             const SizedBox(
               height: 20,
             ),
-            TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Cancel',
-                  style: CustomTheme.of(context)
-                      .typography
-                      .headline16Bold
-                      .copyWith(color: CustomTheme.of(context).colors.primary1),
-                )),
-            TextButton(
-                onPressed: () {},
-                child: Text(
-                  'OK',
-                  style: CustomTheme.of(context)
-                      .typography
-                      .headline16Bold
-                      .copyWith(color: CustomTheme.of(context).colors.primary1),
-                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                    onPressed: () {
+
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: CustomTheme.of(context)
+                          .typography
+                          .headline16Bold
+                          .copyWith(color: CustomTheme.of(context).colors.primary1),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    child: Text(
+                      'OK',
+                      style: CustomTheme.of(context)
+                          .typography
+                          .headline16Bold
+                          .copyWith(color: CustomTheme.of(context).colors.primary1),
+                    )),
+              ],
+            ),
           ],
         ),
       ),
